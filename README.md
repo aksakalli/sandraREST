@@ -1,27 +1,23 @@
 # sandraREST
 Cassandra manager
 
-#todo
-add host and port selection form
+##todo
+* tab function for text query screen
+* database explorer for left side
+* create and delete functions for keyspace, table ...etc
+* making host and port properties dynamic
+* unit test(?)
+* syntax highlighter for cql input
 
-# some notes
-select * from system.schema_keyspaces;
-
-DataStax Node.js driver for Cassandra:
-http://www.datastax.com/dev/blog/introducing-datastax-nodejs-driver-cassandra
-
-http://textangular.com/
-http://stackoverflow.com/questions/25581560/dynamic-syntax-highlighting-with-angularjs-and-highlight-js
-https://github.com/angular-ui/ui-ace
-
-Other rest examples:
-https://github.com/hmsonline/virgil/wiki
-https://github.com/alixaxel/ArrestDB
+##Technologies
+* [Cassandra](https://cassandra.apache.org/)
+* [Node.js](http://nodejs.org/)
+* [Express.js](http://expressjs.com/)
+* [Angular.js](https://angularjs.org/)
+* [Material Design](https://material.angularjs.org/)
 
 
-Default cassandra ports:
-7199 - JMX (was 8080 pre Cassandra 0.8.xx)
-7000 - Internode communication (not used if TLS enabled)
-7001 - TLS Internode communication (used if TLS enabled)
-9160 - Thift client API
-9042 - CQL native transport port
+##Similar Apps
+* [Virgil](https://github.com/hmsonline/virgil/wiki)
+* [ArrestDB](https://github.com/alixaxel/ArrestDB)
+
