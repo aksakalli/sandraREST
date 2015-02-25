@@ -64,5 +64,55 @@ td.row-number {
     background-color: #f5f5f5;
 }
 
+.explorer-menu ul{
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
 
+.explorer-menu ul li {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    list-style-position: inside;
+}
+
+.explorer-menu .explorer-button {
+    border-radius: 0;
+    color: inherit;
+    font-weight: 400;
+    line-height: 40px;
+    margin: 0;
+    max-height: 40px;
+    overflow: hidden;
+    padding: 0px 16px;
+    text-align: left;
+    text-decoration: none;
+    white-space: normal;
+    width: 100%;
+}
+.explorer-menu > ul > li {
+    border-top: 1px solid rgba(0, 0, 0, 0.12);
+}
+.explorer-menu ul li .explorer-button {
+    padding: 0px 16px;
+
+    overflow: hidden;
+    white-space:nowrap;
+    text-overflow:ellipsis;
+    text-transform: none;
+    display:inline-block;
+}
+
+.explorer-menu ul li ul li .explorer-button {
+    padding: 0 16px 0 32px;
+}
+
+.explorer-menu ul li ul li ul li .explorer-button {
+    padding: 0 16px 0 64px;
+}
+
+.explorer-menu .active {
+    background-color: #f6f6f6;
+}
 

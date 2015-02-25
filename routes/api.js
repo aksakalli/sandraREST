@@ -26,7 +26,7 @@ router.get('/', function(req, res, next) {
  * List all column_families for given key_space
  */
 router.get('/:keyspace/', function(req, res, next) {
-    var query = 'select columnfamily_name from system.schema_columnfamilies where keyspace_name = ?';
+    var query = 'select keyspace_name, columnfamily_name from system.schema_columnfamilies where keyspace_name = ?';
     var params = [req.params.keyspace];
 
     client.execute(query, params, {prepare: true}, function (err, result) {

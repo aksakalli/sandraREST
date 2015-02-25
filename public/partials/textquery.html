@@ -1,15 +1,11 @@
 <div ng-controller="TextQueryController">
     <section layout="row" layout-sm="column" layout-margin layout-fill layout-padding layout-align="left left">
-
         <md-button class="md-raised" ng-click="executeQuery()" style="margin-top: 12px" flex>
             <md-icon md-svg-src="img/icons/ic_play_arrow_24px.svg" style="color:#00A000"></md-icon> Execute
         </md-button>
-
-        <md-select ng-model="selectedKeysapce" placeholder="keyspace" flex>
+        <md-select ng-model="selectedKeysapce" md-on-open="loadKeyspaces()" placeholder="keyspace" flex>
             <md-option ng-value="k" ng-repeat="k in keyspaces">{{ k }}</md-option>
         </md-select>
-        <!--md-progress-circular md-mode="indeterminate" style="margin-left: 17px"></md-progress-circular-->
-
     </section>
 
     <md-input-container flex style="top:10px;">
@@ -27,7 +23,6 @@
             <tr ng-repeat="row in queryResult.rows">
                 <td class="row-number">{{$index + 1}}</td>
                 <td ng-repeat="column in queryResult.meta.columns">{{row[column.name]}}</td>
-                <!--td ng-repeat="field in row">{{field}}</td-->
             </tr>
         </table>
         <div ng-if="queryResult.error" class="md-whiteframe-z1">
