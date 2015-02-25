@@ -1,4 +1,4 @@
-var app = angular.module('sandrApp', ['ngMaterial', 'ui.codemirror']);
+var app = angular.module('sandrApp', ['ngMaterial', 'ui.codemirror','ngAnimate']);
 
 app.value('ui.config', {
     codemirror: {

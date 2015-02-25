@@ -90,6 +90,7 @@ td.row-number {
     text-decoration: none;
     white-space: normal;
     width: 100%;
+    text-transform: none;
 }
 .explorer-menu > ul > li {
     border-top: 1px solid rgba(0, 0, 0, 0.12);
@@ -100,7 +101,6 @@ td.row-number {
     overflow: hidden;
     white-space:nowrap;
     text-overflow:ellipsis;
-    text-transform: none;
     display:inline-block;
 }
 
@@ -109,10 +109,31 @@ td.row-number {
 }
 
 .explorer-menu ul li ul li ul li .explorer-button {
-    padding: 0 16px 0 64px;
+    padding: 0 16px 0 48px;
 }
 
-.explorer-menu .active {
-    background-color: #f6f6f6;
+.explorer-menu ul {
+    -webkit-transition: max-height .5s ease-in;
+    -moz-transition: max-height .5s ease-in;
+    -ms-transition: max-height .5s ease-in;
+    -o-transition: max-height .5s ease-in;
+    transition: max-height .5s ease-in;
+
+    overflow: hidden;
+    max-height:9999px;
 }
 
+.explorer-menu ul.passive {
+    max-height: 0;
+
+    -webkit-transition: max-height .5s ease-out;
+    -moz-transition: max-height .5s ease-out;
+    -ms-transition: max-height .5s ease-out;
+    -o-transition: max-height .5s ease-out;
+    transition: max-height .5s ease-out;
+
+}
+
+.explorer-menu .current-item {
+    color: #03a9f4;
+}

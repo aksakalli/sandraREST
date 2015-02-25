@@ -60,39 +60,48 @@ app.controller('explorer', [
         $http.get('../api/').success(function (data) {
             var keyspaces = [];
             for (var i = 0; i < data.length; i++) {
-                keyspaces.push({name: data[i].keyspace_name, columnFamilies:null});
+                keyspaces.push({name: data[i].keyspace_name, columnFamilies:null, isActive:false});
             }
             $scope.keyspaces = keyspaces;
         });
 
+        $scope.currentItem = null;
+
         $scope.getColumnFamilies = function(keyspace){
-            if(keyspace.columnFamilies === null){
+            $scope.currentItem = keyspace;
+            if(keyspace.isActive === false){
                 $http.get('../api/'+keyspace.name).success(function (data) {
                     var columnFamilies = [];
                     for (var i = 0; i < data.length; i++) {
-                        columnFamilies.push({name: data[i].columnfamily_name, columns:null});
+                        columnFamilies.push({name: data[i].columnfamily_name, columns:null, isActive:false});
                     }
                     keyspace.columnFamilies = columnFamilies;
+                    keyspace.isActive = true;
                 });
             }
             else{
-                keyspace.columnFamilies = null;
+                keyspace.isActive = false;
             }
 
         };
 
         $scope.getColumns = function(keyspace,columnFamily){
-            if(columnFamily.columns === null){
+            $scope.currentItem = columnFamily;
+            if(columnFamily.isActive === false){
                 $http.get('../api/'+keyspace.name+'/'+columnFamily.name).success(function (data) {
                     var columns = [];
                     columnFamily.columns = data;
+                    columnFamily.isActive = true;
                 });
             }
             else{
-                columnFamily.columns = null;
+                columnFamily.isActive = false;
             }
-
         };
+
+        $scope.selectColumn = function(column){
+            $scope.currentItem = column;
+        }
     }
 ]);
 

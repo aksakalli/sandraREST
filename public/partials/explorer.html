@@ -1,22 +1,37 @@
 <md-content flex ng-controller="explorer" class="explorer-menu">
+    <md-button class="explorer-button">
+        <md-icon md-svg-src="img/icons/ic_computer_24px.svg"></md-icon> localhost
+    </md-button>
     <ul>
         <li ng-repeat="keyspace in keyspaces">
-            <md-button class="explorer-button" ng-click="getColumnFamilies(keyspace)">
-                <md-icon md-svg-src="img/icons/database.svg" alt="Insert Drive Icon"></md-icon> {{keyspace.name}}
+            <md-button class="explorer-button" ng-click="getColumnFamilies(keyspace)" ng-class="{'current-item': keyspace==currentItem}">
+                <md-icon md-svg-src="img/icons/database.svg"></md-icon> {{keyspace.name}}
             </md-button>
-            <ul>
-                <li ng-repeat="columnFamily in keyspace.columnFamilies" ng-animate=" 'animate' ">
-                    <md-button class="explorer-button" ng-click="getColumns(keyspace,columnFamily)">
-                        <md-icon md-svg-src="img/icons/table.svg" alt="Insert Drive Icon"></md-icon> {{columnFamily.name}}
+            <ul ng-class="{passive: keyspace.isActive==false}">
+                <li ng-repeat="columnFamily in keyspace.columnFamilies">
+                    <md-button class="explorer-button" ng-click="getColumns(keyspace,columnFamily)" ng-class="{'current-item': columnFamily==currentItem}">
+                        <md-icon md-svg-src="img/icons/table.svg"></md-icon> {{columnFamily.name}}
                     </md-button>
-                    <ul>
+                    <ul ng-class="{passive: columnFamily.isActive==false}">
                         <li ng-repeat="column in columnFamily.columns">
-                            <md-button class="explorer-button"><md-icon md-svg-src="img/icons/file_empty.svg" alt="Insert Drive Icon"></md-icon> {{column.column_name}}</md-button>
+                            <md-button class="explorer-button" ng-class="{'current-item': column==currentItem}" ng-click="selectColumn(column)">
+                                <md-icon md-svg-src="img/icons/file_empty.svg"></md-icon> {{column.column_name}} <span ng-if="column.type=='partition_key'">(pk)</span>
+                            </md-button>
                         </li>
                     </ul>
                 </li>
             </ul>
         </li>
     </ul>
+    <br/><br/><br/><br/>
 </md-content>
+<div style="position: absolute; bottom: 0; right:0; padding: 10px 20px;">
+    <md-button class="md-fab md-primary" aria-label="Use Android">
+        <md-icon md-svg-src="img/icons/ic_add_24px.svg"></md-icon>
+    </md-button>
+
+    <md-button class="md-fab md-primary" aria-label="Use Android">
+        <md-icon md-svg-src="img/icons/ic_add_24px.svg"></md-icon>
+    </md-button>
+</div>
 
