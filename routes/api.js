@@ -86,6 +86,15 @@ router.get('/:keyspace/:columnfamily/select', function(req, res, next) {
  * Execute a query
  */
 router.put('/', function(req, res, next) {
+    if(req.body.query === undefined) {
+        var error = new Error('Bad Request');
+        error.status = 400;
+        error.message = "query parameter is missing";
+        error.name = "missing parameter";
+        next(error);
+        return
+    }
+
     client.execute(req.body.query, function (err, result) {
         if(err !== null) {
             var error = new Error('Bad Request');
