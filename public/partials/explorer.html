@@ -9,14 +9,18 @@
             </md-button>
             <ul ng-class="{passive: keyspace.isActive==false}">
                 <li ng-repeat="columnFamily in keyspace.columnFamilies">
-                    <md-button class="explorer-button" ng-click="getColumns(keyspace,columnFamily);setCurrentItem(columnFamily)" ng-class="{'current-item': columnFamily==currentItem}">
-                        <md-icon md-svg-src="img/icons/table.svg"></md-icon> {{columnFamily.name}}
-                    </md-button>
+                    <div class="button-container">
+                        <md-button class="explorer-button" ng-click="getColumns(keyspace,columnFamily);setCurrentItem(columnFamily)" ng-class="{'current-item': columnFamily==currentItem}">
+                            <md-icon md-svg-src="img/icons/table.svg"></md-icon> {{columnFamily.name}}
+                        </md-button>
+                    </div>
                     <ul ng-class="{passive: columnFamily.isActive==false}">
                         <li ng-repeat="column in columnFamily.columns">
-                            <md-button class="explorer-button" ng-click="selectColumn(column);setCurrentItem(column)" ng-class="{'current-item': column==currentItem}">
-                                <md-icon md-svg-src="img/icons/file_empty.svg"></md-icon> {{column.column_name}} <span ng-if="column.type=='partition_key'">(pk)</span>
-                            </md-button>
+                            <div class="button-container">
+                                <md-button class="explorer-button" ng-click="selectColumn(column);setCurrentItem(column)" ng-class="{'current-item': column==currentItem}">
+                                    <md-icon md-svg-src="img/icons/file_empty.svg"></md-icon> {{column.column_name}} <span ng-if="column.type=='partition_key'">(pk)</span>
+                                </md-button>
+                            </div>
                         </li>
                     </ul>
                 </li>
@@ -25,99 +29,106 @@
     </ul>
     <br/><br/><br/><br/><br/><br/>
 </md-content>
-<div class="editor-buttons" style="">
-    <!-- host editor-->
-    <div ng-if="currentItem==null">
-        <md-button class="md-fab md-primary" aria-label="Add Keyspace">
-            <md-tooltip>
-                Add Keyspace
-            </md-tooltip>
-            <md-icon md-svg-src="img/icons/ic_add_24px.svg"></md-icon>
-        </md-button>
-        <md-button class="md-fab md-primary" aria-label="Edit Connection">
-            <md-tooltip>
-                Edit Connection
-            </md-tooltip>
-            <md-icon md-svg-src="img/icons/ic_mode_edit_24px.svg"></md-icon>
-        </md-button>
-        <md-button class="md-fab md-primary" aria-label="Refresh" ng-click="refresh()">
-            <md-tooltip>
-                Refresh
-            </md-tooltip>
-            <md-icon class="button-icon" md-svg-src="img/icons/ic_refresh_24px.svg"></md-icon>
-        </md-button>
-    </div>
 
-    <!-- keyspace editor -->
-    <div ng-if="currentItem.columnFamilies">
-        <md-button class="md-fab md-primary" aria-label="Add Table">
-            <md-tooltip>
-                Add Table
-            </md-tooltip>
-            <md-icon md-svg-src="img/icons/ic_add_24px.svg"></md-icon>
-        </md-button>
-        <md-button class="md-fab md-primary" aria-label="Drop Keyspace">
-            <md-tooltip>
-                Drop
-            </md-tooltip>
-            <md-icon md-svg-src="img/icons/ic_delete_24px.svg"></md-icon>
-        </md-button>
-        <md-button class="md-fab md-primary" aria-label="Edit Keyspace">
-            <md-tooltip>
-                Edit
-            </md-tooltip>
-            <md-icon md-svg-src="img/icons/ic_mode_edit_24px.svg"></md-icon>
-        </md-button>
-    </div>
 
-    <!-- column family editor -->
-    <div ng-if="currentItem.columns">
-        <md-button class="md-fab md-primary" aria-label="Add Column">
-            <md-tooltip>
-                Add Column
-            </md-tooltip>
-            <md-icon md-svg-src="img/icons/ic_add_24px.svg"></md-icon>
-        </md-button>
-        <md-button class="md-fab md-primary" aria-label="Drop Table">
-            <md-tooltip>
-                Drop
-            </md-tooltip>
-            <md-icon md-svg-src="img/icons/ic_delete_24px.svg"></md-icon>
-        </md-button>
-        <md-button class="md-fab md-primary" aria-label="Edit Table">
-            <md-tooltip>
-                Edit
-            </md-tooltip>
-            <md-icon md-svg-src="img/icons/ic_mode_edit_24px.svg"></md-icon>
-        </md-button>
-    </div>
-
-    <!-- column editor -->
-    <div ng-if="currentItem.column_name">
-        <md-button class="md-fab md-primary" aria-label="Drop Column">
-            <md-tooltip>
-                Drop
-            </md-tooltip>
-            <md-icon md-svg-src="img/icons/ic_delete_24px.svg"></md-icon>
-        </md-button>
-        <md-button class="md-fab md-primary" aria-label="Edit Column">
-            <md-tooltip>
-                Edit
-            </md-tooltip>
-            <md-icon md-svg-src="img/icons/ic_mode_edit_24px.svg"></md-icon>
-        </md-button>
-    </div>
-    <div ng-if="false">
-
-        <md-button class="md-fab md-primary" aria-label="">
-            <md-icon md-svg-src="img/icons/ic_add_24px.svg"></md-icon>
-        </md-button>
-        <md-button class="md-fab md-primary" aria-label="">
-            <md-icon md-svg-src="img/icons/ic_delete_24px.svg"></md-icon>
-        </md-button>
-        <md-button class="md-fab md-primary" aria-label="">
-            <md-icon md-svg-src="img/icons/ic_mode_edit_24px.svg"></md-icon>
-        </md-button>
-    </div>
+<!-- host editor-->
+<div ng-if="currentItem==null" class="editor-buttons animate-if">
+    <md-button class="md-fab md-primary" aria-label="Add Keyspace">
+        <md-tooltip>
+            Add Keyspace
+        </md-tooltip>
+        <md-icon md-svg-src="img/icons/ic_add_24px.svg"></md-icon>
+    </md-button>
+    <md-button class="md-fab md-primary" aria-label="Edit Connection">
+        <md-tooltip>
+            Edit Connection
+        </md-tooltip>
+        <md-icon md-svg-src="img/icons/ic_mode_edit_24px.svg"></md-icon>
+    </md-button>
+    <md-button class="md-fab md-primary" aria-label="Refresh" ng-click="refresh()">
+        <md-tooltip>
+            Refresh
+        </md-tooltip>
+        <md-icon class="button-icon" md-svg-src="img/icons/ic_refresh_24px.svg"></md-icon>
+    </md-button>
 </div>
+
+
+
+
+
+
+<!-- keyspace editor -->
+<div ng-if="currentItem.columnFamilies" class="editor-buttons animate-if">
+    <md-button class="md-fab md-primary" aria-label="Add Table">
+        <md-tooltip>
+            Add Table
+        </md-tooltip>
+        <md-icon md-svg-src="img/icons/ic_add_24px.svg"></md-icon>
+    </md-button>
+    <md-button class="md-fab md-primary" aria-label="Drop Keyspace">
+        <md-tooltip>
+            Drop
+        </md-tooltip>
+        <md-icon md-svg-src="img/icons/ic_delete_24px.svg"></md-icon>
+    </md-button>
+    <md-button class="md-fab md-primary" aria-label="Edit Keyspace">
+        <md-tooltip>
+            Edit
+        </md-tooltip>
+        <md-icon md-svg-src="img/icons/ic_mode_edit_24px.svg"></md-icon>
+    </md-button>
+</div>
+
+<!-- column family editor -->
+<div ng-if="currentItem.columns" class="editor-buttons animate-if">
+    <md-button class="md-fab md-primary" aria-label="Add Column">
+        <md-tooltip>
+            Add Column
+        </md-tooltip>
+        <md-icon md-svg-src="img/icons/ic_add_24px.svg"></md-icon>
+    </md-button>
+    <md-button class="md-fab md-primary" aria-label="Drop Table">
+        <md-tooltip>
+            Drop
+        </md-tooltip>
+        <md-icon md-svg-src="img/icons/ic_delete_24px.svg"></md-icon>
+    </md-button>
+    <md-button class="md-fab md-primary" aria-label="Edit Table">
+        <md-tooltip>
+            Edit
+        </md-tooltip>
+        <md-icon md-svg-src="img/icons/ic_mode_edit_24px.svg"></md-icon>
+    </md-button>
+</div>
+
+<!-- column editor -->
+<div ng-if="currentItem.column_name" class="editor-buttons animate-if">
+    <md-button class="md-fab md-primary" aria-label="Drop Column">
+        <md-tooltip>
+            Drop
+        </md-tooltip>
+        <md-icon md-svg-src="img/icons/ic_delete_24px.svg"></md-icon>
+    </md-button>
+    <md-button class="md-fab md-primary" aria-label="Edit Column">
+        <md-tooltip>
+            Edit
+        </md-tooltip>
+        <md-icon md-svg-src="img/icons/ic_mode_edit_24px.svg"></md-icon>
+    </md-button>
+</div>
+
+<div ng-if="false">
+
+    <md-button class="md-fab md-primary" aria-label="">
+        <md-icon md-svg-src="img/icons/ic_add_24px.svg"></md-icon>
+    </md-button>
+    <md-button class="md-fab md-primary" aria-label="">
+        <md-icon md-svg-src="img/icons/ic_delete_24px.svg"></md-icon>
+    </md-button>
+    <md-button class="md-fab md-primary" aria-label="">
+        <md-icon md-svg-src="img/icons/ic_mode_edit_24px.svg"></md-icon>
+    </md-button>
+</div>
+
 
