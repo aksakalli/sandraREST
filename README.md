@@ -1,13 +1,17 @@
 # sandraREST
 Cassandra manager
 
-##todo
-* tab function for text query screen
-* database explorer for left side
-* create and delete functions for keyspace, table ...etc
-* making host and port properties dynamic
-* unit test(?)
-* syntax highlighter for cql input
+## TODO
+
+* Text query side
+  * tab function for text query screen: allowing working on multiple queries like sql server manager using [this module](https://material.angularjs.org/#/demo/material.components.tabs)
+  * syntax highlighter for cql input
+* Database explorer
+  * CRUD functions for keyspace, table ...etc (rest and ui development)
+  * making host and port properties dynamic (rest and ui development)
+* Other
+  * refoctoring REST api code (now everything was written in router)
+  * unit test(?)
 
 ##Technologies
 * [Cassandra](https://cassandra.apache.org/)
