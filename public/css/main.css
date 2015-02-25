@@ -137,3 +137,15 @@ td.row-number {
 .explorer-menu .current-item {
     color: #03a9f4;
 }
+
+.editor-buttons {
+    position: absolute;
+    bottom: 0;
+    right:0;
+    padding: 35px 20px;
+}
+
+.editor-buttons .button-icon {
+    width: 24px;
+    height: 24px
+}

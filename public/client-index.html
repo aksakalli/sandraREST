@@ -22,10 +22,10 @@
 
 <div layout="row" flex>
     <md-sidenav layout="column" class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$media('gt-sm')">
-        <div layout="column" ng-include="'partials/explorer.html'"></div>
+        <div layout="column" ng-include="'partials/explorer.html'" ng-controller="explorer"></div>
     </md-sidenav>
     <div layout="column" flex id="content" class="pad16" style="display: block;position: relative;overflow: auto;padding: 20px;">
-        <div layout="column" ng-include="'partials/textquery.html'"></div>
+        <div layout="column" ng-include="'partials/textquery.html'" ng-controller="TextQueryController"></div>
     </div>
 </div>
 

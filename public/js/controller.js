@@ -57,18 +57,29 @@ app.controller('explorer', [
     '$scope',
     '$http',
     function($scope, $http){
-        $http.get('../api/').success(function (data) {
-            var keyspaces = [];
-            for (var i = 0; i < data.length; i++) {
-                keyspaces.push({name: data[i].keyspace_name, columnFamilies:null, isActive:false});
-            }
-            $scope.keyspaces = keyspaces;
-        });
 
-        $scope.currentItem = null;
+        var init = function() {
+            $http.get('../api/').success(function (data) {
+                var keyspaces = [];
+                for (var i = 0; i < data.length; i++) {
+                    keyspaces.push({name: data[i].keyspace_name, columnFamilies:null, isActive:false});
+                }
+                $scope.keyspaces = keyspaces;
+            });
+
+            $scope.currentItem = null;
+        };
+
+        init();
+        $scope.refresh = function(){
+            init();
+        };
+
+        $scope.setCurrentItem = function(item){
+            $scope.currentItem = item;
+        };
 
         $scope.getColumnFamilies = function(keyspace){
-            $scope.currentItem = keyspace;
             if(keyspace.isActive === false){
                 $http.get('../api/'+keyspace.name).success(function (data) {
                     var columnFamilies = [];
@@ -82,11 +93,9 @@ app.controller('explorer', [
             else{
                 keyspace.isActive = false;
             }
-
         };
 
         $scope.getColumns = function(keyspace,columnFamily){
-            $scope.currentItem = columnFamily;
             if(columnFamily.isActive === false){
                 $http.get('../api/'+keyspace.name+'/'+columnFamily.name).success(function (data) {
                     var columns = [];
