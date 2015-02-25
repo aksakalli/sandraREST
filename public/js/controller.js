@@ -14,6 +14,18 @@ app.controller('TextQueryController', [
     '$scope',
     '$http',
     function($scope, $http){
+        $scope.codemirrorLoaded = function(_editor){
+            var $editor = angular.element(document.getElementsByClassName('CodeMirror'));
+            $editor.addClass('md-input');
+            $editor.css({
+                'border-style': 'solid',
+                'height': '2em'
+            });
+
+            _editor.on("focus", function(){ $editor.parent().addClass('md-input-focused');    });
+            _editor.on("blur", function() { $editor.parent().removeClass('md-input-focused'); });
+        };
+
         $scope.inProgress = false;
 
         $scope.loadKeyspaces = function(){
@@ -39,7 +51,7 @@ app.controller('TextQueryController', [
             });
         };
     }
-])
+]);
 
 app.controller('explorer', [
     '$scope',
@@ -82,5 +94,5 @@ app.controller('explorer', [
 
         };
     }
-])
+]);
 

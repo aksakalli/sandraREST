@@ -5,7 +5,7 @@ Cassandra manager
 
 * Text query side
   * tab function for text query screen: allowing working on multiple queries like sql server manager using [this module](https://material.angularjs.org/#/demo/material.components.tabs)
-  * syntax highlighter for cql input
+  * ~~syntax highlighter for cql input~~
 * Database explorer
   * CRUD functions for keyspace, table ...etc (rest and ui development)
   * making host and port properties dynamic (rest and ui development)
