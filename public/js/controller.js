@@ -14,18 +14,13 @@ app.controller('TextQueryController', [
     '$scope',
     '$http',
     function($scope, $http){
-        /*$scope.editorSettings = {
-            mode: 'text/x-cassandra',
-            lineNumbers: true
-        };*/
-
-        $scope.codemirrorLoaded = function(_editor){
+        $scope.codemirrorLoaded = function(_editor,a,b,c){
             _editor.setOption('mode', 'text/x-cassandra');
             _editor.setOption('lineWrapping', true);
-            _editor.setSize(null, '3em');
+            _editor.setSize(null, 'auto');
 
-            var $editor = angular.element(document.getElementsByClassName('CodeMirror'));
-            $editor.addClass('md-input');
+            var element = angular.element(_editor.doc.cm.getWrapperElement());
+            element.addClass('md-input');
         };
 
         //dummy query
