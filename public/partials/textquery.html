@@ -10,7 +10,7 @@
 
     <md-input-container flex style="top:10px;">
         <label>CQL</label>
-        <textarea ng-model="cqlQuery" columns="15"></textarea>
+        <textarea ng-model="cqlQuery" columns="15" ui-codemirror="{ onLoad : codemirrorLoaded }"></textarea>
     </md-input-container>
 
     <md-progress-linear class="animate-if" ng-if="inProgress" md-mode="indeterminate" style="margin-bottom: 10px;"></md-progress-linear>

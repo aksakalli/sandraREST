@@ -14,18 +14,19 @@ app.controller('TextQueryController', [
     '$scope',
     '$http',
     function($scope, $http){
-        /*
+        /*$scope.editorSettings = {
+            mode: 'text/x-cassandra',
+            lineNumbers: true
+        };*/
+
         $scope.codemirrorLoaded = function(_editor){
+            _editor.setOption('mode', 'text/x-cassandra');
+            _editor.setOption('lineWrapping', true);
+            _editor.setSize(null, '3em');
+
             var $editor = angular.element(document.getElementsByClassName('CodeMirror'));
             $editor.addClass('md-input');
-            $editor.css({
-                'border-style': 'solid',
-                'height': '2em'
-            });
-
-            _editor.on("focus", function(){ $editor.parent().addClass('md-input-focused');    });
-            _editor.on("blur", function() { $editor.parent().removeClass('md-input-focused'); });
-        };*/
+        };
 
         //dummy query
         $scope.cqlQuery ='select * from users';
