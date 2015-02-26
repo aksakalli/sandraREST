@@ -1,48 +1,59 @@
-<section layout="row" layout-sm="column" layout-margin layout-fill layout-padding layout-align="left left">
-    <md-button class="md-raised" ng-click="executeQuery()" style="margin-top: 12px" flex>
-        <md-icon md-svg-src="img/icons/ic_play_arrow_24px.svg" style="color:#00A000"></md-icon> Execute
-    </md-button>
-    <md-select ng-model="selectedKeysapce" md-on-open="loadKeyspaces()" placeholder="keyspace" flex>
-        <md-option ng-value="k" ng-repeat="k in keyspaces">{{ k }}</md-option>
-    </md-select>
-</section>
+<div ng-controller="TextQueryController">
+    <section layout="row" layout-sm="column" layout-margin layout-fill layout-padding layout-align="left left">
+        <md-button class="md-raised" ng-click="executeQuery()" style="margin-top: 12px;max-width: 220px;"  flex>
+            <md-icon md-svg-src="img/icons/ic_play_arrow_24px.svg" style="color:#00A000"></md-icon> Execute
+        </md-button>
+        <md-select ng-model="selectedKeysapce" md-on-open="loadKeyspaces()" placeholder="keyspace" style="max-width: 220px;" flex>
+            <md-option ng-value="k" ng-repeat="k in keyspaces">{{ k }}</md-option>
+        </md-select>
+    </section>
 
-<md-input-container flex style="top:10px;">
-    <label>CQL</label>
-    <textarea ng-model="query" columns="15" ui-codemirror="{ onLoad : codemirrorLoaded }"></textarea>
-</md-input-container>
+    <md-input-container flex style="top:10px;">
+        <label>CQL</label>
+        <textarea ng-model="cqlQuery" columns="15"></textarea>
+    </md-input-container>
 
-<md-progress-linear ng-if="inProgress" md-mode="indeterminate" style="margin-bottom: 10px;"></md-progress-linear>
-<div>
-    <table ng-if="queryResult.rows" class="md-whiteframe-z1">
-        <tr>
-            <th></th>
-            <th ng-repeat="column in queryResult.meta.columns">{{column.name}}</th>
-        </tr>
-        <tr ng-repeat="row in queryResult.rows">
-            <td class="row-number">{{$index + 1}}</td>
-            <td ng-repeat="column in queryResult.meta.columns">{{row[column.name]}}</td>
-        </tr>
-    </table>
-    <div ng-if="queryResult.error" class="md-whiteframe-z1">
-        <md-toolbar class="md-warn">
-            <div class="md-toolbar-tools">
-                <span class="md-flex">{{queryResult.error}}</span>
-            </div>
-        </md-toolbar>
-        <md-content class="md-padding">
-            {{queryResult.message}}
-        </md-content>
-    </div>
-    <div ng-if="queryResult.header" class="md-whiteframe-z1">
-        <md-toolbar class="md-accent">
-            <div class="md-toolbar-tools">
-                <span class="md-flex">Executed</span>
-            </div>
-        </md-toolbar>
-        <md-content class="md-padding">
-            Query was executed. (Id: {{queryResult.header.streamId}})
-        </md-content>
+    <md-progress-linear class="animate-if" ng-if="inProgress" md-mode="indeterminate" style="margin-bottom: 10px;"></md-progress-linear>
+    <div>
+        <table ng-if="queryResult.rows.length > 0" class="md-whiteframe-z1 animate-if">
+            <tr>
+                <th></th>
+                <th ng-repeat="column in queryResult.meta.columns">{{column.name}}</th>
+            </tr>
+            <tr ng-repeat="row in queryResult.rows">
+                <td class="row-number">{{$index + 1}}</td>
+                <td ng-repeat="column in queryResult.meta.columns">{{row[column.name]}}</td>
+            </tr>
+        </table>
+        <div ng-if="queryResult.rows.length == 0" class="md-whiteframe-z1 animate-if">
+            <md-toolbar class="md-accent">
+                <div class="md-toolbar-tools">
+                    <span class="md-flex">Executed</span>
+                </div>
+            </md-toolbar>
+            <md-content class="md-padding">
+                No records found for this query.
+            </md-content>
+        </div>
+        <div ng-if="queryResult.error" class="md-whiteframe-z1 animate-if">
+            <md-toolbar class="md-warn">
+                <div class="md-toolbar-tools">
+                    <span class="md-flex">{{queryResult.error}}</span>
+                </div>
+            </md-toolbar>
+            <md-content class="md-padding">
+                {{queryResult.message}}
+            </md-content>
+        </div>
+        <div ng-if="queryResult.header" class="md-whiteframe-z1 animate-if">
+            <md-toolbar class="md-accent">
+                <div class="md-toolbar-tools">
+                    <span class="md-flex">Executed</span>
+                </div>
+            </md-toolbar>
+            <md-content class="md-padding">
+                Query was executed. (Id: {{queryResult.header.streamId}})
+            </md-content>
+        </div>
     </div>
 </div>
-

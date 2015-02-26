@@ -14,6 +14,7 @@ app.controller('TextQueryController', [
     '$scope',
     '$http',
     function($scope, $http){
+        /*
         $scope.codemirrorLoaded = function(_editor){
             var $editor = angular.element(document.getElementsByClassName('CodeMirror'));
             $editor.addClass('md-input');
@@ -24,8 +25,10 @@ app.controller('TextQueryController', [
 
             _editor.on("focus", function(){ $editor.parent().addClass('md-input-focused');    });
             _editor.on("blur", function() { $editor.parent().removeClass('md-input-focused'); });
-        };
+        };*/
 
+        //dummy query
+        $scope.cqlQuery ='select * from users';
         $scope.inProgress = false;
 
         $scope.loadKeyspaces = function(){
@@ -41,8 +44,9 @@ app.controller('TextQueryController', [
 
         $scope.selectedKeysapce = '';
         $scope.executeQuery = function(){
+            console.log($scope.ebeler);
             $scope.inProgress = true;
-            $http.put('../api/'+$scope.selectedKeysapce, {query : $scope.query}).success(function(data){
+            $http.put('../api/'+$scope.selectedKeysapce, {query : $scope.cqlQuery}).success(function(data){
                 $scope.inProgress = false;
                 $scope.queryResult = data;
             }).error(function(data){
@@ -53,10 +57,11 @@ app.controller('TextQueryController', [
     }
 ]);
 
-app.controller('explorer', [
+app.controller('Explorer', [
     '$scope',
     '$http',
-    function($scope, $http){
+    '$mdDialog',
+    function($scope, $http, $mdDialog){
 
         var init = function() {
             $http.get('../api/').success(function (data) {
@@ -69,7 +74,6 @@ app.controller('explorer', [
 
             $scope.currentItem = null;
         };
-
         init();
         $scope.refresh = function(){
             init();
@@ -111,6 +115,21 @@ app.controller('explorer', [
         $scope.selectColumn = function(column){
             $scope.currentItem = column;
         }
+
+        $scope.showConfirm = function(ev) {
+            var confirm = $mdDialog.confirm()
+                .title('Would you like to delete your debt?')
+                .content('All of the banks have agreed to forgive you your debts.')
+                .ariaLabel('Lucky day')
+                .ok('Please do it!')
+                .cancel('Sounds like a scam')
+                .targetEvent(ev);
+            $mdDialog.show(confirm).then(function() {
+                $scope.alert = 'You decided to get rid of your debt.';
+            }, function() {
+                $scope.alert = 'You decided to keep your debt.';
+            });
+        };
     }
 ]);
 
