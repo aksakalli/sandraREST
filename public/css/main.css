@@ -35,10 +35,13 @@ md-list .md-button {
     width: 1px;
 }
 
+/**
+* Table general
+*/
 table {
-    margin-bottom: 20px;
-    max-width: 100%;
-    /* width: 100%; */
+  margin-bottom: 20px;
+  max-width: 100%;
+  /* width: 100%; */
     border-spacing: 0;
     border-collapse: collapse;
     background-color: transparent;
@@ -64,6 +67,30 @@ td.row-number {
     background-color: #f5f5f5;
 }
 
+/*
+* General angular animate - Opacity based
+*/
+.animate-if.ng-enter, .animate-if.ng-leave {
+    -webkit-transition: opacity .5s ease-in-out;
+    -moz-transition: opacity .5s ease-in-out;
+    -o-transition: opacity .5s ease-in-out;
+    transition: opacity .5s ease-in-out;
+}
+
+.animate-if.ng-enter,
+.animate-if.ng-leave.ng-leave-active {
+    opacity:0;
+}
+
+.animate-if.ng-leave,
+.animate-if.ng-enter.ng-enter-active {
+    opacity:1;
+}
+
+
+/**
+* Explorer style
+*/
 .explorer-menu ul{
     margin: 0;
     padding: 0;
@@ -143,23 +170,18 @@ td.row-number {
     height: 24px
 }
 
-.animate-if.ng-enter, .animate-if.ng-leave {
-    -webkit-transition: opacity .5s ease-in-out;
-    -moz-transition: opacity .5s ease-in-out;
-    -o-transition: opacity .5s ease-in-out;
-    transition: opacity .5s ease-in-out;
-}
-
-.animate-if.ng-enter,
-.animate-if.ng-leave.ng-leave-active {
-    opacity:0;
-}
-
-.animate-if.ng-leave,
-.animate-if.ng-enter.ng-enter-active {
-    opacity:1;
-}
-
+/**
+*   Text query style
+*/
 .CodeMirror {
     border-bottom-style: solid;
+}
+
+.query-results-container {
+    position: relative;
+}
+.query-results-container > div {
+    position: absolute;
+    left:0;
+    right: 0;
 }
