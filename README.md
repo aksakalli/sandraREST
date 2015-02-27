@@ -21,6 +21,12 @@ Cassandra manager
 * [Material Design](https://material.angularjs.org/)
 * [CodeMirror](http://codemirror.net/)
 
+##Tools
+* [Bower](http://bower.io/)
+* [Node Package Manager](https://www.npmjs.com/)
+* [WebStorm](https://www.jetbrains.com/webstorm/)
+* [Git](http://git-scm.com/)
+* [Digital Ocean](https://www.digitalocean.com/)
 
 ##Similar Apps
 * [Virgil](https://github.com/hmsonline/virgil/wiki)
