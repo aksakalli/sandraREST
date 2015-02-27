@@ -1,25 +1,20 @@
 'use strict';
 
-var sanraControllers = angular.module('sanraControllers',[]);
-
-sanraControllers.controller('AppCtrl', [
+app.controller('AppCtrl', [
     '$scope',
     '$mdSidenav',
     function ($scope, $mdSidenav) {
         $scope.toggleSidenav = function (menuId) {
             $mdSidenav(menuId).toggle();
         };
-
-
-
     }
 ]);
 
-sanraControllers.controller('TextQueryController', [
+app.controller('TextQueryController', [
     '$scope',
     '$http',
     function($scope, $http){
-        $scope.codemirrorLoaded = function(_editor){
+        $scope.codemirrorLoaded = function(_editor,a,b,c){
             _editor.setOption('mode', 'text/x-cassandra');
             _editor.setOption('lineWrapping', true);
             _editor.setSize(null, 'auto');
@@ -43,8 +38,9 @@ sanraControllers.controller('TextQueryController', [
             });
         };
 
-        $scope.selectedKeysapce = 'test';
+        $scope.selectedKeysapce = '';
         $scope.executeQuery = function(){
+            console.log($scope.ebeler);
             $scope.inProgress = true;
             $http.put('../api/'+$scope.selectedKeysapce, {query : $scope.cqlQuery}).success(function(data){
                 $scope.inProgress = false;
@@ -57,7 +53,7 @@ sanraControllers.controller('TextQueryController', [
     }
 ]);
 
-sanraControllers.controller('Explorer', [
+app.controller('Explorer', [
     '$scope',
     '$http',
     '$mdDialog',
@@ -102,6 +98,7 @@ sanraControllers.controller('Explorer', [
         $scope.getColumns = function(keyspace,columnFamily){
             if(columnFamily.isActive === false){
                 $http.get('../api/'+keyspace.name+'/'+columnFamily.name).success(function (data) {
+                    var columns = [];
                     columnFamily.columns = data;
                     columnFamily.isActive = true;
                 });
@@ -113,7 +110,7 @@ sanraControllers.controller('Explorer', [
 
         $scope.selectColumn = function(column){
             $scope.currentItem = column;
-        };
+        }
 
         $scope.showConfirm = function(ev) {
             var confirm = $mdDialog.confirm()
