@@ -1,6 +1,8 @@
 'use strict';
 
-app.controller('AppCtrl', [
+var sanraControllers = angular.module('sanraControllers',[]);
+
+sanraControllers.controller('AppCtrl', [
     '$scope',
     '$mdSidenav',
     function ($scope, $mdSidenav) {
@@ -10,11 +12,11 @@ app.controller('AppCtrl', [
     }
 ]);
 
-app.controller('TextQueryController', [
+sanraControllers.controller('TextQueryController', [
     '$scope',
     '$http',
     function($scope, $http){
-        $scope.codemirrorLoaded = function(_editor,a,b,c){
+        $scope.codemirrorLoaded = function(_editor){
             _editor.setOption('mode', 'text/x-cassandra');
             _editor.setOption('lineWrapping', true);
             _editor.setSize(null, 'auto');
@@ -28,7 +30,7 @@ app.controller('TextQueryController', [
         $scope.inProgress = false;
 
         $scope.loadKeyspaces = function(){
-            return $http.get('../api/').success(function (data) {
+            return $http.get('../browser/').success(function (data) {
                 var keyspaceNames = [];
                 keyspaceNames.push("");
                 for (var i = 0; i < data.length; i++) {
@@ -42,7 +44,7 @@ app.controller('TextQueryController', [
         $scope.executeQuery = function(){
             console.log($scope.ebeler);
             $scope.inProgress = true;
-            $http.put('../api/'+$scope.selectedKeysapce, {query : $scope.cqlQuery}).success(function(data){
+            $http.put('../query/'+$scope.selectedKeysapce, {query : $scope.cqlQuery}).success(function(data){
                 $scope.inProgress = false;
                 $scope.queryResult = data;
             }).error(function(data){
@@ -53,24 +55,24 @@ app.controller('TextQueryController', [
     }
 ]);
 
-app.controller('Explorer', [
+sanraControllers.controller('Explorer', [
     '$scope',
     '$http',
     '$mdDialog',
     function($scope, $http, $mdDialog){
 
         var init = function() {
-            $http.get('../api/').success(function (data) {
+            $http.get('../browser/').success(function (data) {
                 var keyspaces = [];
                 for (var i = 0; i < data.length; i++) {
                     keyspaces.push({name: data[i].keyspace_name, columnFamilies:null, isActive:false});
                 }
                 $scope.keyspaces = keyspaces;
             });
-
             $scope.currentItem = null;
         };
         init();
+
         $scope.refresh = function(){
             init();
         };
@@ -81,7 +83,7 @@ app.controller('Explorer', [
 
         $scope.getColumnFamilies = function(keyspace){
             if(keyspace.isActive === false){
-                $http.get('../api/'+keyspace.name).success(function (data) {
+                $http.get('../browser/'+keyspace.name).success(function (data) {
                     var columnFamilies = [];
                     for (var i = 0; i < data.length; i++) {
                         columnFamilies.push({name: data[i].columnfamily_name, columns:null, isActive:false});
@@ -97,8 +99,7 @@ app.controller('Explorer', [
 
         $scope.getColumns = function(keyspace,columnFamily){
             if(columnFamily.isActive === false){
-                $http.get('../api/'+keyspace.name+'/'+columnFamily.name).success(function (data) {
-                    var columns = [];
+                $http.get('../browser/'+keyspace.name+'/'+columnFamily.name+'/columns').success(function (data) {
                     columnFamily.columns = data;
                     columnFamily.isActive = true;
                 });
@@ -110,7 +111,7 @@ app.controller('Explorer', [
 
         $scope.selectColumn = function(column){
             $scope.currentItem = column;
-        }
+        };
 
         $scope.showConfirm = function(ev) {
             var confirm = $mdDialog.confirm()

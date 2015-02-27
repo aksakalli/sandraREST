@@ -1,4 +1,4 @@
-var app = angular.module('sandraApp', [
+var sandraApp = angular.module('sandraApp', [
     'ngMaterial',
     'ui.codemirror',
     'ngAnimate',

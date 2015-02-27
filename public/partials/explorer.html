@@ -1,35 +1,35 @@
 <div  layout="column" ng-controller="Explorer">
-<md-content flex class="explorer-menu">
-    <md-button class="explorer-button" ng-click="setCurrentItem(null)" ng-class="{'current-item': null==currentItem}">
-        <md-icon md-svg-src="img/icons/ic_computer_24px.svg"></md-icon> localhost
-    </md-button>
-    <ul>
-        <li ng-repeat="keyspace in keyspaces">
-            <md-button class="explorer-button" ng-click="getTables(keyspace);setCurrentItem(keyspace)" ng-class="{'current-item': keyspace==currentItem}">
-                <md-icon md-svg-src="img/icons/database.svg"></md-icon> {{keyspace.name}}
-            </md-button>
-            <ul ng-class="{passive: keyspace.isActive==false}">
-                <li ng-repeat="table in keyspace.tables">
-                    <div class="button-container">
-                        <md-button class="explorer-button" ng-click="getColumns(keyspace,table);setCurrentItem(table)" ng-class="{'current-item': table==currentItem}">
-                            <md-icon md-svg-src="img/icons/table.svg"></md-icon> {{table.name}}
-                        </md-button>
-                    </div>
-                    <ul ng-class="{passive: table.isActive==false}">
-                        <li ng-repeat="column in table.columns">
-                            <div class="button-container">
-                                <md-button class="explorer-button" ng-click="selectColumn(column);setCurrentItem(column)" ng-class="{'current-item': column==currentItem}">
-                                    <md-icon md-svg-src="img/icons/file_empty.svg"></md-icon> {{column.column_name}} <span ng-if="column.type=='partition_key'">(pk)</span>
-                                </md-button>
-                            </div>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
-        </li>
-    </ul>
-    <br/><br/><br/><br/><br/><br/>
-</md-content>
+    <md-content flex class="explorer-menu">
+        <md-button class="explorer-button" ng-click="setCurrentItem(null)" ng-class="{'current-item': null==currentItem}">
+            <md-icon md-svg-src="img/icons/ic_computer_24px.svg"></md-icon> localhost
+        </md-button>
+        <ul>
+            <li ng-repeat="keyspace in keyspaces">
+                <md-button class="explorer-button" ng-click="getColumnFamilies(keyspace);setCurrentItem(keyspace)" ng-class="{'current-item': keyspace==currentItem}">
+                    <md-icon md-svg-src="img/icons/database.svg"></md-icon> {{keyspace.name}}
+                </md-button>
+                <ul ng-class="{passive: keyspace.isActive==false}">
+                    <li ng-repeat="columnFamily in keyspace.columnFamilies">
+                        <div class="button-container">
+                            <md-button class="explorer-button" ng-click="getColumns(keyspace,columnFamily);setCurrentItem(columnFamily)" ng-class="{'current-item': columnFamily==currentItem}">
+                                <md-icon md-svg-src="img/icons/table.svg"></md-icon> {{columnFamily.name}}
+                            </md-button>
+                        </div>
+                        <ul ng-class="{passive: columnFamily.isActive==false}">
+                            <li ng-repeat="column in columnFamily.columns">
+                                <div class="button-container">
+                                    <md-button class="explorer-button" ng-click="selectColumn(column);setCurrentItem(column)" ng-class="{'current-item': column==currentItem}">
+                                        <md-icon md-svg-src="img/icons/file_empty.svg"></md-icon> {{column.column_name}} <span ng-if="column.type=='partition_key'">(pk)</span>
+                                    </md-button>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+        <br/><br/><br/><br/><br/><br/>
+    </md-content>
 
 
 <!-- host editor-->

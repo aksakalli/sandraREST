@@ -5,8 +5,26 @@ var cassandra = require('cassandra-driver');
 var client = new cassandra.Client({ contactPoints: ['127.0.0.1']});
 
 
+
 /**
  * Execute a query
+ */
+router.put('/', function(req, res, next) {
+    client.execute(req.body.query, function (err, result) {
+        if(err !== null) {
+            var error = new Error('Bad Request');
+            error.status = 400;
+            error.message = err.message;
+            error.name = err.name;
+            next(error);
+            return
+        }
+        res.json(result);
+    });
+});
+
+/**
+ * Execute a query for given keyspace
  */
 router.put('/:keyspace/', function(req, res, next) {
     client.keyspace = req.params.keyspace;
@@ -22,6 +40,7 @@ router.put('/:keyspace/', function(req, res, next) {
         res.json(result);
     });
 });
+
 
 router.use(function(req, res, next) {
     var err = new Error('Not Found');

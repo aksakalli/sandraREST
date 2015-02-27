@@ -116,7 +116,7 @@ router.delete('/:keyspace/', function(req, res, next) {
  * Table-level
  */
 router.get('/:keyspace/:table/', function(req, res, next) {
-    client.keyspace = req.param.keyspace;
+    client.keyspace = req.params.keyspace;
     var query = 'SELECT * FROM ' + req.params.table + ";";
 
     client.execute(query, function(err, result){
