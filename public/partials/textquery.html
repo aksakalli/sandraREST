@@ -1,12 +1,12 @@
 <div ng-controller="TextQueryController" style="margin-top: 12px;">
-    <section layout="row" layout-sm="column" layout-margin layout-fill layout-padding layout-align="left left">
-        <md-button class="md-raised" ng-click="executeQuery()" style="max-width: 220px;"  flex>
+    <section layout="row" class="query-button-container" layout-sm="column" layout-margin layout-fill layout-padding layout-align="left left">
+        <md-button class="md-raised" ng-click="executeQuery()"  flex>
             <md-icon md-svg-src="img/icons/ic_play_arrow_24px.svg" style="color:#00A000"></md-icon> Execute
         </md-button>
-        <md-select ng-model="selectedKeysapce" md-on-open="loadKeyspaces()" placeholder="keyspace" style="max-width: 220px;" flex>
+        <md-select ng-model="selectedKeysapce" md-on-open="loadKeyspaces()" placeholder="keyspace" flex>
             <md-option ng-value="k" ng-repeat="k in keyspaces">{{ k }}</md-option>
         </md-select>
-        <md-button ng-disabled="!(queryResult.rows.length > 0)" ng-csv="queryResult.rows" class="md-raised"  style="max-width: 220px;"  flex>
+        <md-button ng-disabled="!(queryResult.rows.length > 0)" ng-csv="queryResult.rows" class="md-raised"  flex>
             <md-icon md-svg-src="img/icons/ic_file_download_24px.svg"></md-icon> CSV
         </md-button>
     </section>
@@ -20,7 +20,7 @@
         <div style="height: 15px;">
             <md-progress-linear class="animate-if" ng-if="inProgress" md-mode="indeterminate"></md-progress-linear>
         </div>
-        <div layout="column" class="query-results-container">
+        <div ng-switch="expression" layout="column" class="query-results-container">
             <div>
                 <table ng-if="queryResult.rows.length > 0" class="md-whiteframe-z1 animate-if" >
                     <tr>

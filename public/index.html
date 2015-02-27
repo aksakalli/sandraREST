@@ -1,13 +1,12 @@
 <!DOCTYPE html>
-<html ng-app="sandrApp" ng-strict-di>
+<html ng-app="sandraApp" ng-strict-di>
 <head lang="en" >
     <meta charset="UTF-8">
     <title>sandraREST - Cassandra manager</title>
-
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1" />
     <link rel="stylesheet" href="libs/angular/angular-material.min.css">
     <link rel="stylesheet" href="libs/codemirror/lib/codemirror.css">
     <link rel="stylesheet" href="css/main.css">
-
 </head>
 <body layout="column" ng-controller="AppCtrl">
 
@@ -22,22 +21,31 @@
 <div layout="row" flex>
     <md-sidenav layout="column" ng-include="'partials/explorer.html'" class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$media('gt-sm')">
     </md-sidenav>
-    <div layout="column" flex id="content" class="pad16" style="display: block;position: relative;overflow: auto;padding: 20px;">
+    <div layout="column" flex id="content" class="pad16" style="overflow: auto;padding: 20px;">
         <div layout="column" ng-include="'partials/textquery.html'"></div>
+        
     </div>
 </div>
 
+<!--md-tab ng-repeat="tab in tabs"
+        label="{{tab.title}}">
+    <div class="demo-tab tab" layout="column">
+        <div layout="column" ng-include="'partials/textquery.html'"></div>
+        </div>
+</md-tab-->
+
 
 <!--include libs -->
-<script src="libs/angular/angular.min.js"></script>
-<script src="libs/angular/angular-animate.min.js"></script>
-<script src="libs/angular/angular-aria.min.js"></script>
-<script src="libs/angular/angular-material.min.js"></script>
-<script src="libs/angular/angular-sanitize.min.js"></script>
-<script src="libs/ng-csv/ng-csv.min.js"></script>
-<script src="libs/angular-ui/ui-codemirror.min.js"></script>
-<script src="libs/codemirror/lib/codemirror.js"></script>
-<script src="libs/codemirror/mode/sql/sql.js"></script>
+<script src="bower_components/angular/angular.min.js"></script>
+<script src="bower_components/angular-animate/angular-animate.min.js"></script>
+<script src="bower_components/angular-aria/angular-aria.min.js"></script>
+<script src="bower_components/angular-material/angular-material.min.js"></script>
+<script src="bower_components/angular-resource/angular-resource.min.js"></script>
+<script src="bower_components/angular-sanitize/angular-sanitize.min.js"></script>
+<script src="bower_components/ng-csv/build/ng-csv.min.js"></script>
+<script src="bower_components/angular-ui-codemirror/ui-codemirror.min.js"></script>
+<script src="bower_components/codemirror/lib/codemirror.js"></script>
+<script src="bower_components/codemirror/mode/sql/sql.js"></script>
 
 
 <!--include the app-->

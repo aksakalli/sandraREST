@@ -112,7 +112,7 @@ td.row-number {
     margin: 0;
     max-height: 40px;
     overflow: hidden;
-    padding: 0px 16px;
+    padding: 0 16px;
     text-align: left;
     text-decoration: none;
     white-space: normal;
@@ -123,8 +123,7 @@ td.row-number {
     border-top: 1px solid rgba(0, 0, 0, 0.12);
 }
 .explorer-menu ul li .explorer-button {
-    padding: 0px 16px;
-
+    padding: 0 16px;
     overflow: hidden;
     white-space:nowrap;
     text-overflow:ellipsis;
@@ -184,4 +183,9 @@ td.row-number {
     position: absolute;
     left:0;
     right: 0;
+}
+
+.query-button-container > * {
+    max-width: 220px;
+    min-width: 140px;
 }
