@@ -28,7 +28,7 @@ app.controller('TextQueryController', [
         $scope.inProgress = false;
 
         $scope.loadKeyspaces = function(){
-            return $http.get('../api/').success(function (data) {
+            return $http.get('../browser/').success(function (data) {
                 var keyspaceNames = [];
                 keyspaceNames.push("");
                 for (var i = 0; i < data.length; i++) {
@@ -42,7 +42,7 @@ app.controller('TextQueryController', [
         $scope.executeQuery = function(){
             console.log($scope.ebeler);
             $scope.inProgress = true;
-            $http.put('../api/'+$scope.selectedKeysapce, {query : $scope.cqlQuery}).success(function(data){
+            $http.put('../query/'+$scope.selectedKeysapce, {query : $scope.cqlQuery}).success(function(data){
                 $scope.inProgress = false;
                 $scope.queryResult = data;
             }).error(function(data){
@@ -60,10 +60,10 @@ app.controller('Explorer', [
     function($scope, $http, $mdDialog){
 
         var init = function() {
-            $http.get('../api/').success(function (data) {
+            $http.get('../browser/').success(function (data) {
                 var keyspaces = [];
                 for (var i = 0; i < data.length; i++) {
-                    keyspaces.push({name: data[i].keyspace_name, columnFamilies:null, isActive:false});
+                    keyspaces.push({name: data[i].keyspace_name, tables:null, isActive:false});
                 }
                 $scope.keyspaces = keyspaces;
             });
@@ -79,14 +79,14 @@ app.controller('Explorer', [
             $scope.currentItem = item;
         };
 
-        $scope.getColumnFamilies = function(keyspace){
+        $scope.getTables = function(keyspace){
             if(keyspace.isActive === false){
-                $http.get('../api/'+keyspace.name).success(function (data) {
-                    var columnFamilies = [];
+                $http.get('../browser/'+keyspace.name).success(function (data) {
+                    var table = [];
                     for (var i = 0; i < data.length; i++) {
-                        columnFamilies.push({name: data[i].columnfamily_name, columns:null, isActive:false});
+                        table.push({name: data[i].columnfamily_name, columns:null, isActive:false});
                     }
-                    keyspace.columnFamilies = columnFamilies;
+                    keyspace.tables = table;
                     keyspace.isActive = true;
                 });
             }
@@ -95,22 +95,22 @@ app.controller('Explorer', [
             }
         };
 
-        $scope.getColumns = function(keyspace,columnFamily){
-            if(columnFamily.isActive === false){
-                $http.get('../api/'+keyspace.name+'/'+columnFamily.name).success(function (data) {
+        $scope.getColumns = function(keyspace,table){
+            if(table.isActive === false){
+                $http.get('../browser/'+keyspace.name+'/'+table.name+'/columns').success(function (data) {
                     var columns = [];
-                    columnFamily.columns = data;
-                    columnFamily.isActive = true;
+                    table.columns = data;
+                    table.isActive = true;
                 });
             }
             else{
-                columnFamily.isActive = false;
+                table.isActive = false;
             }
         };
 
         $scope.selectColumn = function(column){
             $scope.currentItem = column;
-        }
+        };
 
         $scope.showConfirm = function(ev) {
             var confirm = $mdDialog.confirm()
