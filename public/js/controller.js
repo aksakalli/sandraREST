@@ -1,20 +1,25 @@
 'use strict';
 
-app.controller('AppCtrl', [
+var sanraControllers = angular.module('sanraControllers',[]);
+
+sanraControllers.controller('AppCtrl', [
     '$scope',
     '$mdSidenav',
     function ($scope, $mdSidenav) {
         $scope.toggleSidenav = function (menuId) {
             $mdSidenav(menuId).toggle();
         };
+
+
+
     }
 ]);
 
-app.controller('TextQueryController', [
+sanraControllers.controller('TextQueryController', [
     '$scope',
     '$http',
     function($scope, $http){
-        $scope.codemirrorLoaded = function(_editor,a,b,c){
+        $scope.codemirrorLoaded = function(_editor){
             _editor.setOption('mode', 'text/x-cassandra');
             _editor.setOption('lineWrapping', true);
             _editor.setSize(null, 'auto');
@@ -38,9 +43,8 @@ app.controller('TextQueryController', [
             });
         };
 
-        $scope.selectedKeysapce = '';
+        $scope.selectedKeysapce = 'test';
         $scope.executeQuery = function(){
-            console.log($scope.ebeler);
             $scope.inProgress = true;
             $http.put('../api/'+$scope.selectedKeysapce, {query : $scope.cqlQuery}).success(function(data){
                 $scope.inProgress = false;
@@ -53,7 +57,7 @@ app.controller('TextQueryController', [
     }
 ]);
 
-app.controller('Explorer', [
+sanraControllers.controller('Explorer', [
     '$scope',
     '$http',
     '$mdDialog',
@@ -98,7 +102,6 @@ app.controller('Explorer', [
         $scope.getColumns = function(keyspace,columnFamily){
             if(columnFamily.isActive === false){
                 $http.get('../api/'+keyspace.name+'/'+columnFamily.name).success(function (data) {
-                    var columns = [];
                     columnFamily.columns = data;
                     columnFamily.isActive = true;
                 });
@@ -110,7 +113,7 @@ app.controller('Explorer', [
 
         $scope.selectColumn = function(column){
             $scope.currentItem = column;
-        }
+        };
 
         $scope.showConfirm = function(ev) {
             var confirm = $mdDialog.confirm()

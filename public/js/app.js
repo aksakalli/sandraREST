@@ -1,1 +1,9 @@
-var app = angular.module('sandrApp', ['ngMaterial','ui.codemirror', 'ngAnimate', 'ngCsv']);
+var app = angular.module('sandraApp', [
+    'ngMaterial',
+    'ui.codemirror',
+    'ngAnimate',
+    'ngCsv',
+
+    'sanraControllers',
+    'sandraServices'
+]);
