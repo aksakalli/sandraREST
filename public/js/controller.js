@@ -30,22 +30,11 @@ sanraControllers.controller('TextQueryController', [
         $scope.cqlQuery = 'select * from users';
         $scope.inProgress = false;
 
-        //TODO: still buggy
         $scope.loadKeyspaces = function () {
-
-            $scope.keyspaces = Keyspace.query();
-/*
-            return $scope.keyspaces = Keyspace.query().$promise.then(
-                function(a){
-                    $scope.keyspaces =a;
-                }
-
-            );*/
-            /*$scope.keyspaces = null;
-            return Keyspace.query(function (keyspaces) {
-                //keyspaces.unshift({keyspace_name: ''});
+            Keyspace.query(function (keyspaces) {
+                keyspaces.unshift({keyspace_name: ''});
                 $scope.keyspaces = keyspaces;
-            }).$q;*/
+            });
         };
 
         $scope.selectedKeyspaceName = '';
