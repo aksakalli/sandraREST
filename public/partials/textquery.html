@@ -3,8 +3,9 @@
         <md-button class="md-raised" ng-click="executeQuery()"  flex>
             <md-icon md-svg-src="img/icons/ic_play_arrow_24px.svg" style="color:#00A000"></md-icon> Execute
         </md-button>
-        <md-select ng-model="selectedKeysapce" md-on-open="loadKeyspaces()" placeholder="keyspace" flex>
-            <md-option ng-value="k" ng-repeat="k in keyspaces">{{ k }}</md-option>
+        <!--md-on-open="loadKeyspaces()" -->
+        <md-select ng-model="selectedKeyspaceName" ng-click="loadKeyspaces()" placeholder="keyspace" flex>
+            <md-option ng-value="k.keyspace_name" ng-repeat="k in keyspaces">{{ k.keyspace_name }}</md-option>
         </md-select>
         <md-button ng-disabled="!(queryResult.rows.length > 0)" ng-csv="queryResult.rows" class="md-raised"  flex>
             <md-icon md-svg-src="img/icons/ic_file_download_24px.svg"></md-icon> CSV

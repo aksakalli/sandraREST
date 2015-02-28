@@ -1,6 +1,6 @@
 'use strict';
 
-var sanraControllers = angular.module('sanraControllers',[]);
+var sanraControllers = angular.module('sanraControllers', []);
 
 sanraControllers.controller('AppCtrl', [
     '$scope',
@@ -14,9 +14,10 @@ sanraControllers.controller('AppCtrl', [
 
 sanraControllers.controller('TextQueryController', [
     '$scope',
-    '$http',
-    function($scope, $http){
-        $scope.codemirrorLoaded = function(_editor){
+    'Keyspace',
+    'CQL',
+    function ($scope, Keyspace, CQL) {
+        $scope.codemirrorLoaded = function (_editor) {
             _editor.setOption('mode', 'text/x-cassandra');
             _editor.setOption('lineWrapping', true);
             _editor.setSize(null, 'auto');
@@ -26,30 +27,37 @@ sanraControllers.controller('TextQueryController', [
         };
 
         //dummy query
-        $scope.cqlQuery ='select * from users';
+        $scope.cqlQuery = 'select * from users';
         $scope.inProgress = false;
 
-        $scope.loadKeyspaces = function(){
-            return $http.get('../browser/').success(function (data) {
-                var keyspaceNames = [];
-                keyspaceNames.push("");
-                for (var i = 0; i < data.length; i++) {
-                    keyspaceNames.push(data[i].keyspace_name);
+        //TODO: still buggy
+        $scope.loadKeyspaces = function () {
+
+            $scope.keyspaces = Keyspace.query();
+/*
+            return $scope.keyspaces = Keyspace.query().$promise.then(
+                function(a){
+                    $scope.keyspaces =a;
                 }
-                $scope.keyspaces = keyspaceNames;
-            });
+
+            );*/
+            /*$scope.keyspaces = null;
+            return Keyspace.query(function (keyspaces) {
+                //keyspaces.unshift({keyspace_name: ''});
+                $scope.keyspaces = keyspaces;
+            }).$q;*/
         };
 
-        $scope.selectedKeysapce = '';
-        $scope.executeQuery = function(){
-            console.log($scope.ebeler);
+        $scope.selectedKeyspaceName = '';
+        $scope.executeQuery = function () {
             $scope.inProgress = true;
-            $http.put('../query/'+$scope.selectedKeysapce, {query : $scope.cqlQuery}).success(function(data){
+            CQL.query({'keyspace': $scope.selectedKeyspaceName, query: $scope.cqlQuery}, function (result) {
                 $scope.inProgress = false;
-                $scope.queryResult = data;
-            }).error(function(data){
+                $scope.queryResult = result;
+            }, function (result) {
+                //query error result
                 $scope.inProgress = false;
-                $scope.queryResult = data;
+                $scope.queryResult = result.data;
             });
         };
     }
@@ -57,74 +65,64 @@ sanraControllers.controller('TextQueryController', [
 
 sanraControllers.controller('Explorer', [
     '$scope',
-    '$http',
     '$mdDialog',
-    function($scope, $http, $mdDialog){
-
-        var init = function() {
-            $http.get('../browser/').success(function (data) {
-                var keyspaces = [];
-                for (var i = 0; i < data.length; i++) {
-                    keyspaces.push({name: data[i].keyspace_name, columnFamilies:null, isActive:false});
-                }
-                $scope.keyspaces = keyspaces;
-            });
+    'Keyspace',
+    'ColumnFamily',
+    'Column',
+    function ($scope, $mdDialog, Keyspace, ColumnFamily, Column) {
+        var init = function () {
+            $scope.keyspaces = Keyspace.query();
             $scope.currentItem = null;
         };
         init();
 
-        $scope.refresh = function(){
+        $scope.refresh = function () {
             init();
         };
 
-        $scope.setCurrentItem = function(item){
+        $scope.setCurrentItem = function (item) {
             $scope.currentItem = item;
         };
 
-        $scope.getColumnFamilies = function(keyspace){
-            if(keyspace.isActive === false){
-                $http.get('../browser/'+keyspace.name).success(function (data) {
-                    var columnFamilies = [];
-                    for (var i = 0; i < data.length; i++) {
-                        columnFamilies.push({name: data[i].columnfamily_name, columns:null, isActive:false});
-                    }
-                    keyspace.columnFamilies = columnFamilies;
-                    keyspace.isActive = true;
-                });
+        $scope.getColumnFamilies = function (keyspace) {
+            if (!keyspace.isActive) {
+                keyspace.columnFamilies = ColumnFamily.query({keyspace: keyspace.keyspace_name});
+                keyspace.isActive = true;
             }
-            else{
+            else {
                 keyspace.isActive = false;
             }
         };
 
-        $scope.getColumns = function(keyspace,columnFamily){
-            if(columnFamily.isActive === false){
-                $http.get('../browser/'+keyspace.name+'/'+columnFamily.name+'/columns').success(function (data) {
-                    columnFamily.columns = data;
-                    columnFamily.isActive = true;
+        $scope.getColumns = function (keyspace, columnFamily) {
+            if (!columnFamily.isActive) {
+                columnFamily.columns = Column.query({
+                    keyspace: keyspace.keyspace_name,
+                    columnFamily: columnFamily.columnfamily_name
                 });
+                columnFamily.isActive = true;
             }
-            else{
+            else {
                 columnFamily.isActive = false;
             }
         };
 
-        $scope.selectColumn = function(column){
+        $scope.selectColumn = function (column) {
             $scope.currentItem = column;
         };
 
-        $scope.showConfirm = function(ev) {
+        $scope.showConfirm = function (ev) {
             var confirm = $mdDialog.confirm()
-                .title('Would you like to delete your debt?')
-                .content('All of the banks have agreed to forgive you your debts.')
+                .title('Drop the Keyspace')
+                .content('Are you sure you want to drop the keyspace?')
                 .ariaLabel('Lucky day')
-                .ok('Please do it!')
-                .cancel('Sounds like a scam')
+                .ok('Yes, drop it')
+                .cancel('Cancel')
                 .targetEvent(ev);
-            $mdDialog.show(confirm).then(function() {
-                $scope.alert = 'You decided to get rid of your debt.';
-            }, function() {
-                $scope.alert = 'You decided to keep your debt.';
+            $mdDialog.show(confirm).then(function () {
+                //yes
+            }, function () {
+                //no
             });
         };
     }

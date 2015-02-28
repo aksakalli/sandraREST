@@ -6,13 +6,13 @@
         <ul>
             <li ng-repeat="keyspace in keyspaces">
                 <md-button class="explorer-button" ng-click="getColumnFamilies(keyspace);setCurrentItem(keyspace)" ng-class="{'current-item': keyspace==currentItem}">
-                    <md-icon md-svg-src="img/icons/database.svg"></md-icon> {{keyspace.name}}
+                    <md-icon md-svg-src="img/icons/database.svg"></md-icon> {{keyspace.keyspace_name}}
                 </md-button>
                 <ul ng-class="{passive: keyspace.isActive==false}">
                     <li ng-repeat="columnFamily in keyspace.columnFamilies">
                         <div class="button-container">
                             <md-button class="explorer-button" ng-click="getColumns(keyspace,columnFamily);setCurrentItem(columnFamily)" ng-class="{'current-item': columnFamily==currentItem}">
-                                <md-icon md-svg-src="img/icons/table.svg"></md-icon> {{columnFamily.name}}
+                                <md-icon md-svg-src="img/icons/table.svg"></md-icon> {{columnFamily.columnfamily_name}}
                             </md-button>
                         </div>
                         <ul ng-class="{passive: columnFamily.isActive==false}">
