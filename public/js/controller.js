@@ -148,9 +148,8 @@ sanraControllers.controller('Explorer', [
                 init();
             });
 
-            function AddUpdateKeyspaceController($scope, $mdDialog,Keyspace, initialKeyspace){
+            function AddUpdateKeyspaceController($scope, $mdDialog, initialKeyspace){
                 $scope.strategyClassOptions = Utilities.strategyClassOptions;
-                console.log(initialKeyspace);
                 if(initialKeyspace){
                     $scope.operationType = 'Update';
                     initialKeyspace.replication.replication_factor = parseInt(initialKeyspace.replication.replication_factor);
@@ -193,7 +192,7 @@ sanraControllers.controller('Explorer', [
 
                 };
             }
-            AddUpdateKeyspaceController.$inject = ['$scope', '$mdDialog','Keyspace','initialKeyspace'];
+            AddUpdateKeyspaceController.$inject = ['$scope', '$mdDialog','initialKeyspace'];
         };
 
         $scope.dropColumnFamily = function(columnFamily){
@@ -257,6 +256,60 @@ sanraControllers.controller('Explorer', [
             })(column));
 
         };
+
+        $scope.addUpdateColumn = function(initialColumnFamily, initialColumn){
+            $mdDialog.show({
+                controller: AddUpdateColumnnController,
+                templateUrl: 'partials/dialogforms/column.html',
+                locals : { initialColumnFamily:initialColumnFamily, initialColumn : initialColumn }
+            }).then(function() {
+                init();
+            });
+
+            function AddUpdateColumnnController($scope, $mdDialog, initialColumnFamily, initialColumn){
+                $scope.typeOptions = Utilities.cqlDataTypes;
+
+                if(initialColumn){
+                    $scope.operationType = 'Update';
+                }
+                else{
+                    $scope.operationType = 'Create';
+                    initialColumn = {
+                        column_name: '',
+                        columnfamily_name : initialColumnFamily.columnfamily_name,
+                        keyspace_name: initialColumnFamily.keyspace_name
+                    };
+                }
+                $scope.column = initialColumn;
+
+                $scope.cancel = function() {
+                    $mdDialog.cancel();
+                };
+                $scope.answer = function() {
+                    if(!$scope.column.column_name || !$scope.column.type){
+                        $scope.errorMessage = 'please fill the name field';
+                        return;
+                    }
+                    var column = new Column($scope.column);
+                    if($scope.operationType == 'Update'){
+                        column.$update({},function(a){
+                            $mdDialog.hide(a);
+                        },function(answer){
+                            $scope.errorMessage = answer.data.message;
+                        });
+                    }else{
+                        column.$save({},function(a){
+                            $mdDialog.hide(a);
+                        },function(answer){
+                            $scope.errorMessage = answer.data.message;
+                        });
+                    }
+
+                };
+            }
+            AddUpdateColumnnController.$inject = ['$scope', '$mdDialog','initialColumnFamily','initialColumn'];
+        };
+
     }
 ]);
 

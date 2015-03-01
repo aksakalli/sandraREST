@@ -1,0 +1,34 @@
+<md-dialog aria-label="{{operationType}} column" flex-sm flex="55">
+    <md-toolbar class="md-primary">
+        <div class="md-toolbar-tools">
+            <span class="md-flex">{{operationType}} column</span>
+        </div>
+    </md-toolbar>
+    <md-content>
+        <form name="columnForm">
+            <md-input-container>
+                <label>Name</label>
+                <input ng-disabled="operationType=='Update'" name="column_name" ng-model="column.column_name" required>
+                <div ng-messages="columnForm.column_name.$error">
+                    <div ng-message="required">This is required.</div>
+                </div>
+            </md-input-container>
+            <md-select name="class" ng-model="column.type">
+                <md-select-label>Data Type</md-select-label>
+                <md-optgroup label="Strategy Class">
+                    <md-option ng-value="opt" ng-repeat="opt in typeOptions">{{ opt }}</md-option>
+                </md-optgroup>
+            </md-select>
+            <p ng-bind="errorMessage" style="color: rgb(244, 67, 54)"></p>
+        </form>
+    </md-content>
+
+    <div class="md-actions" layout="row">
+        <md-button ng-click="cancel()">
+            Cancel
+        </md-button>
+        <md-button ng-click="answer()" class="md-primary">
+            {{operationType}}
+        </md-button>
+    </div>
+</md-dialog>

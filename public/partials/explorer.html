@@ -78,7 +78,7 @@
 
 <!-- column family editor -->
 <div ng-if="currentItem.columns" class="editor-buttons animate-if">
-    <md-button class="md-fab md-primary" aria-label="Add Column">
+    <md-button class="md-fab md-primary" aria-label="Add Column" ng-click="addUpdateColumn(currentItem)">
         <md-tooltip>
             Add Column
         </md-tooltip>
@@ -106,7 +106,7 @@
         </md-tooltip>
         <md-icon md-svg-src="img/icons/ic_delete_24px.svg"></md-icon>
     </md-button>
-    <md-button class="md-fab md-primary" aria-label="Edit Column">
+    <md-button class="md-fab md-primary" aria-label="Edit Column" ng-click="addUpdateColumn(currentItem,currentItem)">
         <md-tooltip>
             Edit
         </md-tooltip>
