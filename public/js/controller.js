@@ -104,7 +104,7 @@ sandraControllers.controller('TextQueryController', [
     }
 ]);
 
-sandraControllers.controller('Explorer', [
+sandraControllers.controller('ExplorerController', [
     '$scope',
     '$mdDialog',
     'Keyspace',

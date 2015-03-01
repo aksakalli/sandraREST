@@ -217,5 +217,12 @@ td.row-number {
 
 md-tabs .md-header {
     border-bottom: 1px solid #D8D8D8;
+    position: fixed;
+    background: white;
+    margin-bottom: 20px;
+    z-index: 5;
+}
 
+md-tabs.md-default-theme .md-header {
+    background: white;
 }
