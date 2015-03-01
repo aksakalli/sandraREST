@@ -2,7 +2,8 @@ var express = require('express');
 var router = express.Router();
 
 var cassandra = require('cassandra-driver');
-var client = new cassandra.Client({ contactPoints: ['127.0.0.1']});
+var clientOptions = require('../cassandra_config.json');
+var client = new cassandra.Client(clientOptions);
 
 
 
