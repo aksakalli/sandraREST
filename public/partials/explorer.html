@@ -1,7 +1,7 @@
 <div  layout="column" ng-controller="Explorer">
     <md-content flex class="explorer-menu">
         <md-button class="explorer-button" ng-click="setCurrentItem(null)" ng-class="{'current-item': null==currentItem}">
-            <md-icon md-svg-src="img/icons/ic_computer_24px.svg"></md-icon> localhost
+            <md-icon md-svg-src="img/icons/ic_computer_24px.svg"></md-icon> Cassandra Server
         </md-button>
         <ul>
             <li ng-repeat="keyspace in keyspaces">
@@ -84,7 +84,7 @@
         </md-tooltip>
         <md-icon md-svg-src="img/icons/ic_add_24px.svg"></md-icon>
     </md-button>
-    <md-button class="md-fab md-primary" aria-label="Drop Table">
+    <md-button class="md-fab md-primary" aria-label="Drop Table" ng-click="dropColumnFamily(currentItem)">
         <md-tooltip>
             Drop
         </md-tooltip>

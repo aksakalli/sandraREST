@@ -13,8 +13,8 @@ sandraServices.factory('Keyspace', ['$resource',
 
 sandraServices.factory('ColumnFamily', ['$resource',
     function ($resource) {
-        return $resource('/browser/:keyspace', {}, {
-            query: {method: 'GET', isArray: true}
+        return $resource('/browser/:keyspace/:columnFamily', {keyspace:'@keyspace_name',columnFamily:'@columnfamily_name'}, {
+            query: {method: 'GET', params:{columnFamily:''}, isArray: true}
         });
     }]);
 

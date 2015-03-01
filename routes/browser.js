@@ -106,6 +106,9 @@ router.put('/:keyspace/', function(req, res, next) {
     });
 });
 
+/**
+ * Delete given keyspace
+ */
 router.delete('/:keyspace/', function(req, res, next) {
     var query = 'DROP KEYSPACE ' + req.params.keyspace;
 
@@ -122,7 +125,7 @@ router.delete('/:keyspace/', function(req, res, next) {
 });
 
 /**
- * Table-level
+ * Get row data for given table
  */
 router.get('/:keyspace/:table/', function(req, res, next) {
     client.keyspace = req.params.keyspace;
@@ -140,6 +143,9 @@ router.get('/:keyspace/:table/', function(req, res, next) {
     });
 });
 
+/**
+ * Create Table
+ */
 router.post('/:keyspace/:table/', function(req, res, next) {
     if (!req.body.columns ||
         !req.body.key ||
@@ -186,6 +192,9 @@ router.post('/:keyspace/:table/', function(req, res, next) {
     });
 });
 
+/**
+ * Update table
+ */
 router.put('/:keyspace/:table/', function(req, res, next) {
     if (!req.body.options ||
         req.body.options.length == 0) {
@@ -224,6 +233,9 @@ router.put('/:keyspace/:table/', function(req, res, next) {
     });
 });
 
+/**
+ * Delete table
+ */
 router.delete('/:keyspace/:table/', function(req, res, next) {
     client.keyspace = req.params.keyspace;
     var query = 'DROP TABLE ' + req.params.table;

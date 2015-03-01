@@ -111,8 +111,17 @@ sanraControllers.controller('Explorer', [
             $mdDialog.show(confirm).then((function(k){
                 return function(){
                     var keyspace = new Keyspace({ 'keyspace_name' : k.keyspace_name });
-                    keyspace.$delete();
-                    init();
+                    keyspace.$delete(function(){
+                        init();
+                    },function(answer){
+                        $mdDialog.show(
+                            $mdDialog.alert()
+                                .title(answer.data.error)
+                                .content(answer.data.message)
+                                .ariaLabel(answer.data.error)
+                                .ok('Ok')
+                        );
+                    });
                 }
             })(keyspace));
 
@@ -175,6 +184,35 @@ sanraControllers.controller('Explorer', [
             AddUpdateKeyspaceController.$inject = ['$scope', '$mdDialog','Keyspace','initialKeyspace'];
         };
 
+        $scope.dropColumnFamily = function(columnFamily){
+            var confirm = $mdDialog.confirm()
+                .title('Drop the Column Family')
+                .content('Are you sure you want to drop "'+ columnFamily.columnfamily_name +'"?')
+                .ariaLabel('Drop')
+                .ok('Yes, drop it')
+                .cancel('Cancel');
+
+            $mdDialog.show(confirm).then((function(c){
+                return function(){
+                    var columnFamily = new ColumnFamily({
+                        'keyspace_name' : c.keyspace_name,
+                        'columnfamily_name' : c.columnfamily_name
+                    });
+                    columnFamily.$delete(function(){
+                        init();
+                    },function(answer){
+                        $mdDialog.show(
+                            $mdDialog.alert()
+                                .title(answer.data.error)
+                                .content(answer.data.message)
+                                .ariaLabel(answer.data.error)
+                                .ok('Ok')
+                        );
+                    });
+                }
+            })(columnFamily));
+
+        };
     }
 ]);
 
