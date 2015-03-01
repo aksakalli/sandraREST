@@ -6,7 +6,8 @@ sandraServices.factory('Keyspace', ['$resource',
     function ($resource) {
         return $resource('/browser/:keyspace', {keyspace:'@keyspace_name'}, {
             query: {method: 'GET', params:{keyspace_name:''}, isArray: true},
-            update: {method: 'PUT'}
+            update: {method: 'PUT'},
+            save: {method: 'POST'}
         });
     }]);
 

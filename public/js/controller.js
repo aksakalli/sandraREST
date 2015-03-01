@@ -175,21 +175,6 @@ sanraControllers.controller('Explorer', [
             AddUpdateKeyspaceController.$inject = ['$scope', '$mdDialog','Keyspace','initialKeyspace'];
         };
 
-
-        $scope.showConfirm = function (ev) {
-            var confirm = $mdDialog.confirm()
-                .title('Drop the Keyspace')
-                .content('Are you sure you want to drop the keyspace?')
-                .ariaLabel('Lucky day')
-                .ok('Yes, drop it')
-                .cancel('Cancel')
-                .targetEvent(ev);
-            $mdDialog.show(confirm).then(function () {
-                //yes
-            }, function () {
-                //no
-            });
-        };
     }
 ]);
 
