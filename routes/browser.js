@@ -16,7 +16,7 @@ var object_to_string = function(object){
  * List all keyspaces for this node
  */
 router.get('/', function(req, res, next) {
-    client.execute('select keyspace_name from system.schema_keyspaces', function (err, result) {
+    client.execute('select * from system.schema_keyspaces', function (err, result) {
         if(err !== null) {
             var error = new Error('Bad Request');
             error.status = 400;
@@ -24,12 +24,15 @@ router.get('/', function(req, res, next) {
             next(error);
             return
         }
+        for(var i=0;i<result.rows.length;i++){
+            result.rows[i].replication = JSON.parse(result.rows[i].strategy_options);
+        }
         res.json(result.rows);
     });
 });
 
 /**
- * Keyspace-level
+ * List all columnfamilies for given keyspace
  */
 router.get('/:keyspace/', function(req, res, next) {
     var query = 'select keyspace_name, columnfamily_name from system.schema_columnfamilies where keyspace_name = ?',
@@ -47,6 +50,9 @@ router.get('/:keyspace/', function(req, res, next) {
     });
 });
 
+/**
+ * Create a keyspace
+ */
 router.post('/:keyspace/', function(req, res, next) {
     if (!req.body.replication ||
         !req.body.replication.class ||
@@ -54,7 +60,7 @@ router.post('/:keyspace/', function(req, res, next) {
         (req.body.replication.class == 'NetworkTopologyStrategy' && req.body.replication.length == 1)) {
         var error = new Error('Bad Request');
         error.status = 400;
-        error.message = err.message;
+        error.message = 'missing or invalid parameters';
         next(error);
         return
     }
@@ -73,6 +79,9 @@ router.post('/:keyspace/', function(req, res, next) {
     });
 });
 
+/**
+ * Update given keyspace
+ */
 router.put('/:keyspace/', function(req, res, next) {
     if (!req.body.replication) {
         var error = new Error('Bad Request');

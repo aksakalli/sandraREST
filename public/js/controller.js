@@ -43,10 +43,10 @@ sanraControllers.controller('TextQueryController', [
             CQL.query({'keyspace': $scope.selectedKeyspaceName, query: $scope.cqlQuery}, function (result) {
                 $scope.inProgress = false;
                 $scope.queryResult = result;
-            }, function (result) {
+            }, function (answer) {
                 //query error result
                 $scope.inProgress = false;
-                $scope.queryResult = result.data;
+                $scope.queryResult = answer.data;
             });
         };
     }
@@ -100,6 +100,82 @@ sanraControllers.controller('Explorer', [
             $scope.currentItem = column;
         };
 
+        $scope.dropKeyspace = function(keyspace){
+            var confirm = $mdDialog.confirm()
+                .title('Drop the Keyspace')
+                .content('Are you sure you want to drop "'+ keyspace.keyspace_name +'"?')
+                .ariaLabel('Drop')
+                .ok('Yes, drop it')
+                .cancel('Cancel');
+
+            $mdDialog.show(confirm).then((function(k){
+                return function(){
+                    var keyspace = new Keyspace({ 'keyspace_name' : k.keyspace_name });
+                    keyspace.$delete();
+                    init();
+                }
+            })(keyspace));
+
+        };
+
+        $scope.addUpdateKeyspace = function(initialKeyspace){
+            $mdDialog.show({
+                controller: AddUpdateKeyspaceController,
+                templateUrl: 'partials/dialogforms/keyspace.html',
+                locals : { initialKeyspace : initialKeyspace }
+            }).then(function() {
+                init();
+            });
+
+            function AddUpdateKeyspaceController($scope, $mdDialog,Keyspace, initialKeyspace){
+                $scope.strategyClassOptions = ['SimpleStrategy','NetworkTopologyStrategy'];
+                console.log(initialKeyspace);
+                if(initialKeyspace){
+                    $scope.operationType = 'Update';
+                    initialKeyspace.replication.replication_factor = parseInt(initialKeyspace.replication.replication_factor);
+                    initialKeyspace.replication.class = 'SimpleStrategy';
+                }
+                else{
+                    $scope.operationType = 'Create';
+                    initialKeyspace = {
+                        keyspace_name: '',
+                        replication: {
+                            class:'SimpleStrategy',
+                            replication_factor:''
+                        }
+                    };
+                }
+                $scope.keyspace = initialKeyspace;
+
+                $scope.cancel = function() {
+                    $mdDialog.cancel();
+                };
+                $scope.answer = function() {
+                    if(!$scope.keyspace.keyspace_name){
+                        $scope.errorMessage = 'please fill the name field';
+                        return;
+                    }
+                    var keyspace = new Keyspace($scope.keyspace);
+                    if($scope.operationType == 'Update'){
+                        keyspace.$update({},function(a){
+                            $mdDialog.hide(a);
+                        },function(answer){
+                            $scope.errorMessage = answer.data.message;
+                        });
+                    }else{
+                        keyspace.$save({},function(a){
+                            $mdDialog.hide(a);
+                        },function(answer){
+                            $scope.errorMessage = answer.data.message;
+                        });
+                    }
+
+                };
+            }
+            AddUpdateKeyspaceController.$inject = ['$scope', '$mdDialog','Keyspace','initialKeyspace'];
+        };
+
+
         $scope.showConfirm = function (ev) {
             var confirm = $mdDialog.confirm()
                 .title('Drop the Keyspace')
@@ -116,4 +192,6 @@ sanraControllers.controller('Explorer', [
         };
     }
 ]);
+
+
 

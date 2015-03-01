@@ -1,0 +1,42 @@
+<md-dialog aria-label="{{operationType}} keyspace" flex-sm flex="55">
+    <md-toolbar class="md-primary">
+        <div class="md-toolbar-tools">
+            <span class="md-flex">{{operationType}} keyspace</span>
+        </div>
+    </md-toolbar>
+    <md-content>
+        <form name="keyspaceForm">
+            <md-input-container>
+                <label>Name</label>
+                <input ng-disabled="operationType=='Update'" name="keyspace_name" ng-model="keyspace.keyspace_name" required>
+                <div ng-messages="keyspaceForm.keyspace_name.$error">
+                    <div ng-message="required">This is required.</div>
+                </div>
+            </md-input-container>
+            <md-input-container>
+                <label> Replication Factor</label>
+                <input name="replication_factor" type="number" ng-model="keyspace.replication.replication_factor" required>
+                <div ng-messages="keyspaceForm.replication_factor.$error">
+                    <div ng-message="required">This is required.</div>
+                    <div ng-message="number">This should be number</div>
+                </div>
+            </md-input-container>
+            <md-select name="class" ng-model="keyspace.replication.class">
+                <md-select-label> {{ keyspace.replication.class || 'Strategy Class'}} </md-select-label>
+                <md-optgroup label="Strategy Class">
+                    <md-option ng-value="opt" ng-repeat="opt in strategyClassOptions">{{ opt }}</md-option>
+                </md-optgroup>
+            </md-select>
+            <p ng-bind="errorMessage" style="color: rgb(244, 67, 54)"></p>
+        </form>
+    </md-content>
+
+    <div class="md-actions" layout="row">
+        <md-button ng-click="cancel()">
+            Cancel
+        </md-button>
+        <md-button ng-click="answer(keyspace)" class="md-primary">
+            {{operationType}}
+        </md-button>
+    </div>
+</md-dialog>

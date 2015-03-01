@@ -161,7 +161,7 @@ td.row-number {
     position: absolute;
     bottom: 0;
     right:0;
-    padding: 35px 20px;
+    padding: 0 35px 45px 0;
 }
 
 .editor-buttons .button-icon {

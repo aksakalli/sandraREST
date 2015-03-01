@@ -34,18 +34,18 @@
 
 <!-- host editor-->
 <div ng-if="currentItem==null" class="editor-buttons animate-if">
-    <md-button class="md-fab md-primary" aria-label="Add Keyspace">
+    <md-button ng-click="addUpdateKeyspace()" class="md-fab md-primary" aria-label="Add Keyspace">
         <md-tooltip>
             Add Keyspace
         </md-tooltip>
         <md-icon md-svg-src="img/icons/ic_add_24px.svg"></md-icon>
     </md-button>
-    <md-button class="md-fab md-primary" aria-label="Edit Connection">
+    <!--md-button class="md-fab md-primary" aria-label="Edit Connection">
         <md-tooltip>
             Edit Connection
         </md-tooltip>
         <md-icon md-svg-src="img/icons/ic_mode_edit_24px.svg"></md-icon>
-    </md-button>
+    </md-button-->
     <md-button class="md-fab md-primary" aria-label="Refresh" ng-click="refresh()">
         <md-tooltip>
             Refresh
@@ -62,13 +62,13 @@
         </md-tooltip>
         <md-icon md-svg-src="img/icons/ic_add_24px.svg"></md-icon>
     </md-button>
-    <md-button class="md-fab md-primary" aria-label="Drop Keyspace" ng-click="showConfirm()">
+    <md-button class="md-fab md-primary" aria-label="Drop Keyspace" ng-click="dropKeyspace(currentItem)">
         <md-tooltip>
             Drop
         </md-tooltip>
         <md-icon md-svg-src="img/icons/ic_delete_24px.svg"></md-icon>
     </md-button>
-    <md-button class="md-fab md-primary" aria-label="Edit Keyspace">
+    <md-button ng-click="addUpdateKeyspace(currentItem)" class="md-fab md-primary" aria-label="Edit Keyspace">
         <md-tooltip>
             Edit
         </md-tooltip>
@@ -110,19 +110,6 @@
         <md-tooltip>
             Edit
         </md-tooltip>
-        <md-icon md-svg-src="img/icons/ic_mode_edit_24px.svg"></md-icon>
-    </md-button>
-</div>
-
-<div ng-if="false">
-
-    <md-button class="md-fab md-primary" aria-label="">
-        <md-icon md-svg-src="img/icons/ic_add_24px.svg"></md-icon>
-    </md-button>
-    <md-button class="md-fab md-primary" aria-label="">
-        <md-icon md-svg-src="img/icons/ic_delete_24px.svg"></md-icon>
-    </md-button>
-    <md-button class="md-fab md-primary" aria-label="">
         <md-icon md-svg-src="img/icons/ic_mode_edit_24px.svg"></md-icon>
     </md-button>
 </div>

@@ -3,7 +3,7 @@ var sandraApp = angular.module('sandraApp', [
     'ui.codemirror',
     'ngAnimate',
     'ngCsv',
-
+    'ngMessages',
     'sanraControllers',
     'sandraServices'
 ]);

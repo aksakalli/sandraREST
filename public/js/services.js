@@ -4,8 +4,9 @@ var sandraServices = angular.module('sandraServices', ['ngResource']);
 
 sandraServices.factory('Keyspace', ['$resource',
     function ($resource) {
-        return $resource('/browser/', {}, {
-            query: {method: 'GET', isArray: true}
+        return $resource('/browser/:keyspace', {keyspace:'@keyspace_name'}, {
+            query: {method: 'GET', params:{keyspace_name:''}, isArray: true},
+            update: {method: 'PUT'}
         });
     }]);
 
