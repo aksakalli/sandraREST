@@ -20,8 +20,8 @@ sandraServices.factory('ColumnFamily', ['$resource',
 
 sandraServices.factory('Column', ['$resource',
     function ($resource) {
-        return $resource('/browser/:keyspace/:columnFamily/columns', {}, {
-            query: {method: 'GET', isArray: true}
+        return $resource('/browser/:keyspace/:columnFamily/columns/:column', {keyspace:'@keyspace_name',columnFamily:'@columnfamily_name',column:'@column_name'}, {
+            query: {method: 'GET', params:{column:''}, isArray: true}
         });
     }]);
 

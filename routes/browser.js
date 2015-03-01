@@ -271,6 +271,25 @@ router.get('/:keyspace/:table/columns/', function(req, res, next) {
     });
 });
 
+/**
+ * Drop column
+ */
+router.delete('/:keyspace/:table/columns/:column', function(req, res, next) {
+    client.keyspace = req.params.keyspace;
+    var query = 'ALTER TABLE ' + req.params.table + ' DROP ' + req.params.column ;
+
+    client.execute(query, function(err, result){
+        if (err) {
+            var error = new Error('Bad Request');
+            error.status = 400;
+            error.message = err.message;
+            next(error);
+            return;
+        }
+        res.json(result.rows);
+    });
+});
+
 
 router.use(function(req, res, next) {
     var err = new Error('Not Found');

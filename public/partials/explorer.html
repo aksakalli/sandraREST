@@ -100,7 +100,7 @@
 
 <!-- column editor -->
 <div ng-if="currentItem.column_name" class="editor-buttons animate-if">
-    <md-button class="md-fab md-primary" aria-label="Drop Column">
+    <md-button class="md-fab md-primary" aria-label="Drop Column" ng-click="dropColumn(currentItem)">
         <md-tooltip>
             Drop
         </md-tooltip>

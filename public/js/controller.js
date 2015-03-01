@@ -225,6 +225,38 @@ sanraControllers.controller('Explorer', [
             })(columnFamily));
 
         };
+
+
+        $scope.dropColumn = function(column){
+            var confirm = $mdDialog.confirm()
+                .title('Drop the Column')
+                .content('Are you sure you want to drop "'+ column.column_name +'"?')
+                .ariaLabel('Drop')
+                .ok('Yes, drop it')
+                .cancel('Cancel');
+
+            $mdDialog.show(confirm).then((function(c){
+                return function(){
+                    var column = new Column({
+                        'keyspace_name' : c.keyspace_name,
+                        'columnfamily_name' : c.columnfamily_name,
+                        'column_name': c.column_name
+                    });
+                    column.$delete(function(){
+                        init();
+                    },function(answer){
+                        $mdDialog.show(
+                            $mdDialog.alert()
+                                .title(answer.data.error)
+                                .content(answer.data.message)
+                                .ariaLabel(answer.data.error)
+                                .ok('Ok')
+                        );
+                    });
+                }
+            })(column));
+
+        };
     }
 ]);
 
