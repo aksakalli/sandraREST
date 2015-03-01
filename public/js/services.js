@@ -31,3 +31,12 @@ sandraServices.factory('CQL', ['$resource',
             query: {method: 'PUT'}
         });
     }]);
+
+sandraServices.factory('Utilities', [
+    function () {
+        var utils = {};
+        utils.strategyClassOptions = ['SimpleStrategy','NetworkTopologyStrategy'];
+        utils.cqlDataTypes = ['ascii','bigint','blob','boolean','counter','decimal','double','float','int','text','timestamp','uuid','timeuuid','varchar','varint'];
+
+        return utils;
+    }]);

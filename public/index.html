@@ -33,7 +33,13 @@
         <div layout="column" ng-include="'partials/textquery.html'"></div>
         </div>
 </md-tab-->
-
+<div ng-if="mainPageError" class="connection-error-container">
+    <div>
+        <h2>Connection error.</h2>
+        <p style="color: rgb(244, 67, 54)" ng-bind="mainPageError"></p>
+        <md-button class="md-raised" ng-click="checkConnection()">Retry</md-button>
+    </div>
+</div>
 
 <!--include libs -->
 <script src="bower_components/angular/angular.min.js"></script>

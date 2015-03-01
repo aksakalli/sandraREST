@@ -5,10 +5,21 @@ var sanraControllers = angular.module('sanraControllers', []);
 sanraControllers.controller('AppCtrl', [
     '$scope',
     '$mdSidenav',
-    function ($scope, $mdSidenav) {
+    'Keyspace',
+    function ($scope, $mdSidenav,Keyspace) {
         $scope.toggleSidenav = function (menuId) {
             $mdSidenav(menuId).toggle();
         };
+
+        $scope.mainPageError = false;
+        $scope.checkConnection = function(){
+            Keyspace.query(function () {
+                $scope.mainPageError = false;
+            },function(answer){
+                $scope.mainPageError = answer.data.message;
+            });
+        };
+        $scope.checkConnection();
     }
 ]);
 
@@ -58,7 +69,8 @@ sanraControllers.controller('Explorer', [
     'Keyspace',
     'ColumnFamily',
     'Column',
-    function ($scope, $mdDialog, Keyspace, ColumnFamily, Column) {
+    'Utilities',
+    function ($scope, $mdDialog, Keyspace, ColumnFamily, Column, Utilities) {
         var init = function () {
             $scope.keyspaces = Keyspace.query();
             $scope.currentItem = null;
@@ -137,7 +149,7 @@ sanraControllers.controller('Explorer', [
             });
 
             function AddUpdateKeyspaceController($scope, $mdDialog,Keyspace, initialKeyspace){
-                $scope.strategyClassOptions = ['SimpleStrategy','NetworkTopologyStrategy'];
+                $scope.strategyClassOptions = Utilities.strategyClassOptions;
                 console.log(initialKeyspace);
                 if(initialKeyspace){
                     $scope.operationType = 'Update';

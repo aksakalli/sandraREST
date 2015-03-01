@@ -189,3 +189,24 @@ td.row-number {
     max-width: 220px;
     min-width: 140px;
 }
+
+.connection-error-container {
+    z-index: 100;
+    position: absolute;
+    left: 0;
+    top:0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.7);
+}
+
+.connection-error-container > div {
+    width: 400px;
+    height: 250px;
+    background: white;
+    position: relative;
+    margin: auto;
+    top: 100px;
+    padding: 25px;
+    border-radius: 4px;
+}
