@@ -1,7 +1,7 @@
 <div  layout="column" ng-controller="ExplorerController">
     <md-content flex class="explorer-menu">
         <md-button class="explorer-button" ng-click="setCurrentItem(null)" ng-class="{'current-item': null==currentItem}">
-            <md-icon md-svg-src="img/icons/ic_computer_24px.svg"></md-icon> Cassandra Server
+            <md-icon md-svg-src="img/icons/ic_computer_24px.svg"></md-icon> Cassandra DB
         </md-button>
         <ul>
             <li ng-repeat="keyspace in keyspaces">
