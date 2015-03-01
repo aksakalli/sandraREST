@@ -35,6 +35,10 @@ md-list .md-button {
     width: 1px;
 }
 
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+    display: none !important;
+}
+
 /**
 * Table general
 */
@@ -180,9 +184,9 @@ td.row-number {
     position: relative;
 }
 .query-results-container > div {
-    position: absolute;
+    /*position: absolute;
     left:0;
-    right: 0;
+    right: 0;*/
 }
 
 .query-button-container > * {
@@ -209,4 +213,9 @@ td.row-number {
     top: 100px;
     padding: 25px;
     border-radius: 4px;
+}
+
+md-tabs .md-header {
+    border-bottom: 1px solid #D8D8D8;
+
 }

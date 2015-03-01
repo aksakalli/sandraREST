@@ -21,19 +21,22 @@
 <div layout="row" flex>
     <md-sidenav layout="column" ng-include="'partials/explorer.html'" class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$media('gt-sm')">
     </md-sidenav>
-    <div layout="column" flex id="content" class="pad16" style="overflow: auto;padding: 20px;">
-        <div layout="column" ng-include="'partials/textquery.html'"></div>
+    <div layout="column" flex style="overflow: auto;">
+        <md-tabs md-selected="selectedIndex" >
+            <md-tab ng-repeat="tab in tabs"
+                    label="{{tab.title}}">
+                <div class="demo-tab tab" layout="column" style="padding: 25px" >
+                    <div layout="column" ng-include="'partials/textquery.html'"></div>
+                </div>
+            </md-tab>
+        </md-tabs>
+        <!--div layout="column" ng-include="'partials/textquery.html'"></div-->
         
     </div>
 </div>
 
-<!--md-tab ng-repeat="tab in tabs"
-        label="{{tab.title}}">
-    <div class="demo-tab tab" layout="column">
-        <div layout="column" ng-include="'partials/textquery.html'"></div>
-        </div>
-</md-tab-->
-<div ng-if="mainPageError" class="connection-error-container">
+
+<div class="connection-error-container ng-cloak" ng-if="mainPageError">
     <div>
         <h2>Connection error.</h2>
         <p style="color: rgb(244, 67, 54)" ng-bind="mainPageError"></p>

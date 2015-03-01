@@ -56,12 +56,12 @@
 
 <!-- keyspace editor -->
 <div ng-if="currentItem.columnFamilies" class="editor-buttons animate-if">
-    <md-button class="md-fab md-primary" aria-label="Add Table">
+    <!--md-button class="md-fab md-primary" aria-label="Add Table">
         <md-tooltip>
             Add Table
         </md-tooltip>
         <md-icon md-svg-src="img/icons/ic_add_24px.svg"></md-icon>
-    </md-button>
+    </md-button-->
     <md-button class="md-fab md-primary" aria-label="Drop Keyspace" ng-click="dropKeyspace(currentItem)">
         <md-tooltip>
             Drop
@@ -90,12 +90,19 @@
         </md-tooltip>
         <md-icon md-svg-src="img/icons/ic_delete_24px.svg"></md-icon>
     </md-button>
-    <md-button class="md-fab md-primary" aria-label="Edit Table">
+    <md-button class="md-fab md-primary" aria-label="Drop Table" ng-click="showRows(currentItem)">
+        <md-tooltip>
+            Select Rows
+        </md-tooltip>
+        <md-icon md-svg-src="img/icons/ic_view_list_24px.svg"></md-icon>
+    </md-button>
+
+    <!--md-button class="md-fab md-primary" aria-label="Edit Table">
         <md-tooltip>
             Edit
         </md-tooltip>
         <md-icon md-svg-src="img/icons/ic_mode_edit_24px.svg"></md-icon>
-    </md-button>
+    </md-button-->
 </div>
 
 <!-- column editor -->

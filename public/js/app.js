@@ -4,6 +4,7 @@ var sandraApp = angular.module('sandraApp', [
     'ngAnimate',
     'ngCsv',
     'ngMessages',
-    'sanraControllers',
+
+    'sandraControllers',
     'sandraServices'
 ]);

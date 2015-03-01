@@ -1,29 +1,57 @@
 'use strict';
 
-var sanraControllers = angular.module('sanraControllers', []);
+var sandraControllers = angular.module('sandraControllers', []);
 
-sanraControllers.controller('AppCtrl', [
+sandraControllers.controller('AppCtrl', [
     '$scope',
     '$mdSidenav',
+    '$timeout',
     'Keyspace',
-    function ($scope, $mdSidenav,Keyspace) {
+    function ($scope, $mdSidenav, $timeout, Keyspace) {
         $scope.toggleSidenav = function (menuId) {
             $mdSidenav(menuId).toggle();
         };
 
         $scope.mainPageError = false;
-        $scope.checkConnection = function(){
+        $scope.checkConnection = function () {
             Keyspace.query(function () {
                 $scope.mainPageError = false;
-            },function(answer){
+            }, function (answer) {
                 $scope.mainPageError = answer.data.message;
             });
         };
         $scope.checkConnection();
+
+        $scope.runQueryInNewTab = function (query) {
+            $scope.selectedIndex = $scope.tabs.length - 1;
+            $timeout(function () {
+                $scope.tabs[$scope.selectedIndex].query = query;
+            }, 500);
+        };
+
+        var tabId = 1;
+        $scope.tabs = [{title: 'query ' + tabId, tabId: tabId}];
+        $scope.$watch('selectedIndex', function (current) {
+            if (current >= $scope.tabs.length - 1) {
+                if (current > $scope.tabs.length - 1) {
+                    $scope.selectedIndex = $scope.tabs.length - 1;
+                    return;
+                }
+
+                tabId++;
+                $scope.tabs.push({title: '+', tabId: tabId, query: ''});
+                $scope.tabs[current].title = 'query ' + $scope.tabs[current].tabId;
+                $scope.$watch('tabs.length', function () {
+                    if (1 == $scope.tabs.length) {
+                        $scope.selectedIndex = 1;
+                    }
+                });
+            }
+        });
     }
 ]);
 
-sanraControllers.controller('TextQueryController', [
+sandraControllers.controller('TextQueryController', [
     '$scope',
     'Keyspace',
     'CQL',
@@ -37,8 +65,21 @@ sanraControllers.controller('TextQueryController', [
             element.addClass('md-input');
         };
 
-        //dummy query
-        $scope.cqlQuery = 'select * from users';
+        $scope.closeThisTab = function () {
+            for (var i = 0; i < $scope.$parent.tabs.length; i++) {
+                if ($scope.$parent.tabs[i].tabId == $scope.tab.tabId) {
+                    $scope.$parent.tabs.splice(i, 1);
+                }
+            }
+        };
+        $scope.cqlQuery = ' ';
+        $scope.$watch('tab.query', function () {
+            if ($scope.tab.query) {
+                $scope.cqlQuery = $scope.tab.query;
+                $scope.executeQuery();
+            }
+        });
+
         $scope.inProgress = false;
 
         $scope.loadKeyspaces = function () {
@@ -63,7 +104,7 @@ sanraControllers.controller('TextQueryController', [
     }
 ]);
 
-sanraControllers.controller('Explorer', [
+sandraControllers.controller('Explorer', [
     '$scope',
     '$mdDialog',
     'Keyspace',
@@ -112,20 +153,20 @@ sanraControllers.controller('Explorer', [
             $scope.currentItem = column;
         };
 
-        $scope.dropKeyspace = function(keyspace){
+        $scope.dropKeyspace = function (keyspace) {
             var confirm = $mdDialog.confirm()
                 .title('Drop the Keyspace')
-                .content('Are you sure you want to drop "'+ keyspace.keyspace_name +'"?')
+                .content('Are you sure you want to drop "' + keyspace.keyspace_name + '"?')
                 .ariaLabel('Drop')
                 .ok('Yes, drop it')
                 .cancel('Cancel');
 
-            $mdDialog.show(confirm).then((function(k){
-                return function(){
-                    var keyspace = new Keyspace({ 'keyspace_name' : k.keyspace_name });
-                    keyspace.$delete(function(){
+            $mdDialog.show(confirm).then((function (k) {
+                return function () {
+                    var keyspace = new Keyspace({'keyspace_name': k.keyspace_name});
+                    keyspace.$delete(function () {
                         init();
-                    },function(answer){
+                    }, function (answer) {
                         $mdDialog.show(
                             $mdDialog.alert()
                                 .title(answer.data.error)
@@ -139,79 +180,82 @@ sanraControllers.controller('Explorer', [
 
         };
 
-        $scope.addUpdateKeyspace = function(initialKeyspace){
+        $scope.addUpdateKeyspace = function (initialKeyspace) {
             $mdDialog.show({
                 controller: AddUpdateKeyspaceController,
                 templateUrl: 'partials/dialogforms/keyspace.html',
-                locals : { initialKeyspace : initialKeyspace }
-            }).then(function() {
+                locals: {initialKeyspace: initialKeyspace}
+            }).then(function () {
                 init();
             });
 
-            function AddUpdateKeyspaceController($scope, $mdDialog, initialKeyspace){
+            function AddUpdateKeyspaceController($scope, $mdDialog, initialKeyspace) {
                 $scope.strategyClassOptions = Utilities.strategyClassOptions;
-                if(initialKeyspace){
+                if (initialKeyspace) {
                     $scope.operationType = 'Update';
                     initialKeyspace.replication.replication_factor = parseInt(initialKeyspace.replication.replication_factor);
                     initialKeyspace.replication.class = 'SimpleStrategy';
                 }
-                else{
+                else {
                     $scope.operationType = 'Create';
                     initialKeyspace = {
                         keyspace_name: '',
                         replication: {
-                            class:'SimpleStrategy',
-                            replication_factor:''
+                            class: 'SimpleStrategy',
+                            replication_factor: ''
                         }
                     };
                 }
                 $scope.keyspace = initialKeyspace;
 
-                $scope.cancel = function() {
+                $scope.cancel = function () {
                     $mdDialog.cancel();
                 };
-                $scope.answer = function() {
-                    if(!$scope.keyspace.keyspace_name){
+                $scope.answer = function () {
+                    if (!$scope.keyspace.keyspace_name) {
                         $scope.errorMessage = 'please fill the name field';
                         return;
                     }
                     var keyspace = new Keyspace($scope.keyspace);
-                    if($scope.operationType == 'Update'){
-                        keyspace.$update({},function(a){
+                    if ($scope.operationType == 'Update') {
+                        keyspace.$update({}, function (a) {
                             $mdDialog.hide(a);
-                        },function(answer){
+                        }, function (answer) {
                             $scope.errorMessage = answer.data.message;
                         });
-                    }else{
-                        keyspace.$save({},function(a){
+                    } else {
+                        keyspace.$save({}, function (a) {
                             $mdDialog.hide(a);
-                        },function(answer){
+                        }, function (answer) {
                             $scope.errorMessage = answer.data.message;
                         });
                     }
-
                 };
             }
-            AddUpdateKeyspaceController.$inject = ['$scope', '$mdDialog','initialKeyspace'];
-        };
 
-        $scope.dropColumnFamily = function(columnFamily){
+            AddUpdateKeyspaceController.$inject = ['$scope', '$mdDialog', 'initialKeyspace'];
+        };
+        $scope.showRows = function (columnFamily) {
+            var query = 'select * from ' + columnFamily.keyspace_name + '.' + columnFamily.columnfamily_name;
+            $scope.$parent.runQueryInNewTab(query);
+        };
+        $scope.dropColumnFamily = function (columnFamily) {
             var confirm = $mdDialog.confirm()
                 .title('Drop the Column Family')
-                .content('Are you sure you want to drop "'+ columnFamily.columnfamily_name +'"?')
+                .content('Are you sure you want to drop "' + columnFamily.columnfamily_name + '"?')
                 .ariaLabel('Drop')
                 .ok('Yes, drop it')
                 .cancel('Cancel');
 
-            $mdDialog.show(confirm).then((function(c){
-                return function(){
+            $mdDialog.show(confirm).then((function (c) {
+                return function () {
                     var columnFamily = new ColumnFamily({
-                        'keyspace_name' : c.keyspace_name,
-                        'columnfamily_name' : c.columnfamily_name
+                        'keyspace_name': c.keyspace_name,
+                        'columnfamily_name': c.columnfamily_name
                     });
-                    columnFamily.$delete(function(){
+                    columnFamily.$delete(function () {
                         init();
-                    },function(answer){
+                    }, function (answer) {
                         $mdDialog.show(
                             $mdDialog.alert()
                                 .title(answer.data.error)
@@ -226,24 +270,24 @@ sanraControllers.controller('Explorer', [
         };
 
 
-        $scope.dropColumn = function(column){
+        $scope.dropColumn = function (column) {
             var confirm = $mdDialog.confirm()
                 .title('Drop the Column')
-                .content('Are you sure you want to drop "'+ column.column_name +'"?')
+                .content('Are you sure you want to drop "' + column.column_name + '"?')
                 .ariaLabel('Drop')
                 .ok('Yes, drop it')
                 .cancel('Cancel');
 
-            $mdDialog.show(confirm).then((function(c){
-                return function(){
+            $mdDialog.show(confirm).then((function (c) {
+                return function () {
                     var column = new Column({
-                        'keyspace_name' : c.keyspace_name,
-                        'columnfamily_name' : c.columnfamily_name,
+                        'keyspace_name': c.keyspace_name,
+                        'columnfamily_name': c.columnfamily_name,
                         'column_name': c.column_name
                     });
-                    column.$delete(function(){
+                    column.$delete(function () {
                         init();
-                    },function(answer){
+                    }, function (answer) {
                         $mdDialog.show(
                             $mdDialog.alert()
                                 .title(answer.data.error)
@@ -257,61 +301,59 @@ sanraControllers.controller('Explorer', [
 
         };
 
-        $scope.addUpdateColumn = function(initialColumnFamily, initialColumn){
+        $scope.addUpdateColumn = function (initialColumnFamily, initialColumn) {
             $mdDialog.show({
                 controller: AddUpdateColumnnController,
                 templateUrl: 'partials/dialogforms/column.html',
-                locals : { initialColumnFamily:initialColumnFamily, initialColumn : initialColumn }
-            }).then(function() {
+                locals: {initialColumnFamily: initialColumnFamily, initialColumn: initialColumn}
+            }).then(function () {
                 init();
             });
 
-            function AddUpdateColumnnController($scope, $mdDialog, initialColumnFamily, initialColumn){
+            function AddUpdateColumnnController($scope, $mdDialog, initialColumnFamily, initialColumn) {
                 $scope.typeOptions = Utilities.cqlDataTypes;
 
-                if(initialColumn){
+                if (initialColumn) {
                     $scope.operationType = 'Update';
                 }
-                else{
+                else {
                     $scope.operationType = 'Create';
                     initialColumn = {
                         column_name: '',
-                        columnfamily_name : initialColumnFamily.columnfamily_name,
+                        columnfamily_name: initialColumnFamily.columnfamily_name,
                         keyspace_name: initialColumnFamily.keyspace_name
                     };
                 }
                 $scope.column = initialColumn;
 
-                $scope.cancel = function() {
+                $scope.cancel = function () {
                     $mdDialog.cancel();
                 };
-                $scope.answer = function() {
-                    if(!$scope.column.column_name || !$scope.column.type){
+                $scope.answer = function () {
+                    if (!$scope.column.column_name || !$scope.column.type) {
                         $scope.errorMessage = 'please fill the name field';
                         return;
                     }
                     var column = new Column($scope.column);
-                    if($scope.operationType == 'Update'){
-                        column.$update({},function(a){
+                    if ($scope.operationType == 'Update') {
+                        column.$update({}, function (a) {
                             $mdDialog.hide(a);
-                        },function(answer){
+                        }, function (answer) {
                             $scope.errorMessage = answer.data.message;
                         });
-                    }else{
-                        column.$save({},function(a){
+                    } else {
+                        column.$save({}, function (a) {
                             $mdDialog.hide(a);
-                        },function(answer){
+                        }, function (answer) {
                             $scope.errorMessage = answer.data.message;
                         });
                     }
 
                 };
             }
-            AddUpdateColumnnController.$inject = ['$scope', '$mdDialog','initialColumnFamily','initialColumn'];
+
+            AddUpdateColumnnController.$inject = ['$scope', '$mdDialog', 'initialColumnFamily', 'initialColumn'];
         };
 
     }
 ]);
-
-
-

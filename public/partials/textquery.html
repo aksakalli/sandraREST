@@ -1,14 +1,16 @@
 <div ng-controller="TextQueryController" style="margin-top: 12px;">
-    <section layout="row" class="query-button-container" layout-sm="column" layout-margin layout-fill layout-padding layout-align="left left">
-        <md-button class="md-raised" ng-click="executeQuery()"  flex>
+    <section layout="row" class="query-button-container" layout-sm="column" layout-wrap layout-margin layout-fill layout-padding layout-align="left left">
+        <md-button class="md-raised" ng-click="executeQuery()"  flex flex-md>
             <md-icon md-svg-src="img/icons/ic_play_arrow_24px.svg" style="color:#00A000"></md-icon> Execute
         </md-button>
-        <!--md-on-open="loadKeyspaces()" -->
-        <md-select ng-model="selectedKeyspaceName" ng-click="loadKeyspaces()" placeholder="keyspace" flex>
+        <md-select ng-model="selectedKeyspaceName" ng-click="loadKeyspaces()" placeholder="keyspace" flex flex-md>
             <md-option ng-value="k.keyspace_name" ng-repeat="k in keyspaces">{{ k.keyspace_name }}</md-option>
         </md-select>
-        <md-button ng-disabled="!(queryResult.rows.length > 0)" ng-csv="queryResult.rows" class="md-raised"  flex>
+        <md-button ng-disabled="!(queryResult.rows.length > 0)" ng-csv="queryResult.rows" class="md-raised"  flex flex-md>
             <md-icon md-svg-src="img/icons/ic_file_download_24px.svg"></md-icon> CSV
+        </md-button>
+        <md-button class="md-raised" ng-click="closeThisTab()" flex flex-md>
+            <md-icon md-svg-src="img/icons/ic_close_24px.svg"></md-icon> Close
         </md-button>
     </section>
     <div layout="column">
