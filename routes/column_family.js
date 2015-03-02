@@ -73,7 +73,7 @@ Browser.ColumnFamily = {
             !req.body.options.length) {
             var error = new Error('Bad Request');
             error.status = 400;
-            error.message = err.message;
+            error.message = "Options parameter is not defined properly";
             next(error);
             return
         }

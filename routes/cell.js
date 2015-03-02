@@ -7,9 +7,9 @@ var Browser = require('./browser');
   * ~~`DELETE`~~
   */
 
-Browser.prototype.Cell = {};
+Browser.Cell = {};
 
-Browser.prototype.Cell.fetch = function(req, res, next) {
+Browser.Cell.fetch = function(req, res, next) {
     var query = 'SELECT * FROM system.schema_columns WHERE keyspace_name = ? AND columnfamily_name = ? AND column_name = ?;',
         params = [req.params.keyspace, req.params.column_family, req.params.column];
 
@@ -19,7 +19,7 @@ Browser.prototype.Cell.fetch = function(req, res, next) {
     this.executePreparedQuery(query, params, res, next);
 };
 
-Browser.prototype.Cell.add = function(req, res, next) {
+Browser.Cell.add = function(req, res, next) {
     if (!req.body.type) {
         var error = new Error('Bad Request');
         error.status = 400;
@@ -34,7 +34,7 @@ Browser.prototype.Cell.add = function(req, res, next) {
     this.executePreparedQuery(query, params, res, next);
 };
 
-Browser.prototype.Cell.edit = function(req, res, next) {
+Browser.Cell.edit = function(req, res, next) {
     if (!req.body.type) {
         var error = new Error('Bad Request');
         error.status = 400;
@@ -50,7 +50,7 @@ Browser.prototype.Cell.edit = function(req, res, next) {
     this.executePreparedQuery(query, params, res, next);
 };
 
-Browser.prototype.Cell.delete = function(req, res, next) {
+Browser.Cell.delete = function(req, res, next) {
     this.client.keyspace = req.param.keyspace;
 
     var query = ['ALTER TABLE', req.params.column_family, 'DROP', req.params.column].join(" ") + ';';
