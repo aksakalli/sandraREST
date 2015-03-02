@@ -9,7 +9,7 @@ Cassandra manager
   * ~~[syntax highlighter](http://codemirror.net/mode/sql/index.html?mime=text/x-cassandra) for cql input~~
   (some improvement require)
 * Database explorer
-  * CRUD functions for keyspace, table ...etc (rest and ui development) (in progress)
+  * CRUD functions for keyspace, column family ...etc (rest and ui development) (in progress)
   * making host and port properties dynamic (rest and ui development) (in progress)
 * Other
   * refactoring REST browser code (now everything was written in router)
@@ -41,58 +41,42 @@ Cassandra manager
 * `PUT {query: String}` - run query on given keyspace
 
 #### Browser
+`/connect/`
+
+* `GET` - get the list of database servers
+* `POST {address: String }` - add new database servers
+* `PUT {address: [String] }` - set a new set of database servers
+* `DELETE {address: [String] }` - remove set of servers from preferences
+
 `/browser/`
 
 * `GET` - get keyspaces
-* ~~`POST`~~
-* ~~`PUT`~~
-* ~~`DELETE`~~
 
 `/browser/:keyspace/`
 
-* `GET` - get list of tables for given keyspace
+* `GET` - get list of column families for given keyspace
 * `POST {replication: {class: String, %class_properties%} }` - add new keyspace (`CREATE KEYSPACE`)
 * `PUT {replication: {class: String, %class_properties%} }` - change properties of given keyspace (`ALTER KEYSPACE`)
 * `DELETE` - drop given keyspace (`DROP KEYSPACE`)
 
-`/browser/:keyspace/:table/`
+`/browser/:keyspace/:column_family/`
 
-* `GET` - get the whole table for preview
-* `POST {columns: [ {name: String, type: String} ], key: String, (options: [ {name: String, value: String|{}} ])? }` - add new table (`CREATE TABLE`)
-* `PUT {options: [ {name: String, value: String|{}} ]}` - change options of given table (`ALTER TABLE WITH`)
-* `DELETE` - drop given table (`DROP TABLE`)
+* `GET` - get the whole column family for preview
+* `POST {columns: [ {name: String, type: String} ], key: String, (options: [ {name: String, value: String|{}} ])? }` - add new column family (`CREATE TABLE`)
+* `PUT {options: [ {name: String, value: String|{}} ]}` - change options of given column family (`ALTER TABLE WITH`)
+* `DELETE` - drop given column family (`DROP TABLE`)
 
-`/browser/:keyspace/:table/columns/`
+`/browser/:keyspace/:column_family/columns/`
 
-* `GET` - get list of columns for given table
-* ~~`POST`~~
-* ~~`PUT`~~
-* ~~`DELETE`~~
+* `GET` - get list of columns for given column family
 
-`/browser/:keyspace/:table/columns/:column/`
+`/browser/:keyspace/:column_family/columns/:column/`
 
-* `GET` - get column properties (type and if it is a key)
-* `POST {type: String}` - add new column
-* `PUT {name: String, type: String}` - change properties of given column
-* `DELETE` - delete given column
+* `GET` - get column properties: `{keyspace_name: String, columnfamily_name: String, column_name: String, component_index, index_name, index_options, index_type, type: "partition_key"|"regular"|?, validator: org.apache.cassandra.db.marshal.%TypeName%}`
+* `POST {type: String}` - add new column (`ALTER TABLE ADD`)
+* `PUT {type: String}` - change properties of given column (`ALTER TABLE ALTER`)
+* `DELETE` - delete given column (`ALTER TABLE DROP`)
 
-`/browser/:keyspace/:table/rows/`
+`/browser/:keyspace/:column_family/rows/`
 
-* `GET` - ?
-* `POST {name: String}` - ?
-* `PUT {name: String}` - ?
-* `DELETE` - ?
-
-`/browser/:keyspace/:table/rows/:row_key_value`
-
-* `GET` - fetch single row
-* `POST {name: String}` -
-* `PUT {name: String}` - ?
-* `DELETE` - delete row
-
-`/browser/:keyspace/:table/rows/:row_key_value/:column`
-
-* `GET` - get cell
-* ~~`POST {name: String}`~~
-* `PUT {name: String}` - Edit row value
-* ~~`DELETE`~~
+* `GET` - == `GET /browser/:keyspace/:column_family/`
