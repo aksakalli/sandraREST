@@ -193,7 +193,8 @@ sandraControllers.controller('ExplorerController', [
                 $scope.strategyClassOptions = Utilities.strategyClassOptions;
                 if (initialKeyspace) {
                     $scope.operationType = 'Update';
-                    initialKeyspace.replication.replication_factor = parseInt(initialKeyspace.replication.replication_factor);
+                    initialKeyspace.replication = {};
+                    initialKeyspace.replication.replication_factor = parseInt(JSON.parse(initialKeyspace.strategy_options).replication_factor);
                     initialKeyspace.replication.class = 'SimpleStrategy';
                 }
                 else {
