@@ -3,8 +3,8 @@ var config =    require("../cassandra_config.json"),
                 require("../routes/keyspace");
                 require("../routes/column_family");
                 require("../routes/column");
-                require("../routes/row");
-                require("../routes/cell");
+                //require("../routes/row");
+                //require("../routes/cell");
 
 Browser.setup(config);
 
@@ -254,7 +254,7 @@ exports.testEditColumnFamily = {
     }
 };
 
-exports.editAddColumn = {
+exports.testAddColumn = {
     positiveTest: function (test) {
         simple_req = {
             params: {
@@ -289,7 +289,7 @@ exports.editAddColumn = {
     }
 };
 
-exports.editEditColumn = {
+exports.testEditColumn = {
     positiveTest: function (test) {
         simple_req = {
             params: {

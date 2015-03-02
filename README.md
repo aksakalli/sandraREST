@@ -36,9 +36,8 @@ Cassandra manager
 
 ### REST endpoints
 #### Query
-`/query/:keyspace/`
-
-* `PUT {query: String}` - run query on given keyspace
+* `PUT /query/ {query: String}` - run query
+* `PUT /query/:keyspace/ {query: String}` - run query on given keyspace
 
 #### Browser
 `/connect/`
@@ -72,7 +71,7 @@ Cassandra manager
 
 `/browser/:keyspace/:column_family/columns/:column/`
 
-* `GET` - get column properties: `{keyspace_name: String, columnfamily_name: String, column_name: String, component_index, index_name, index_options, index_type, type: "partition_key"|"regular"|?, validator: org.apache.cassandra.db.marshal.%TypeName%}`
+* `GET` - get column properties
 * `POST {type: String}` - add new column (`ALTER TABLE ADD`)
 * `PUT {type: String}` - change properties of given column (`ALTER TABLE ALTER`)
 * `DELETE` - delete given column (`ALTER TABLE DROP`)
