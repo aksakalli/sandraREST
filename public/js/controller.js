@@ -2,7 +2,7 @@
 
 var sandraControllers = angular.module('sandraControllers', []);
 
-sandraControllers.controller('AppCtrl', [
+sandraControllers.controller('AppController', [
     '$scope',
     '$mdSidenav',
     '$timeout',
