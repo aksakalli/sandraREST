@@ -1,5 +1,11 @@
 # sandraREST
 Cassandra manager
+![screen shot](docs/img/screenshot.png)
+
+[REST Endpoints](docs/rest_endpoints.md)
+[Web UI User Guide](docs/user_guide.md)
+
+![interface guide](docs/img/overview.png)
 
 ### TODO
 
