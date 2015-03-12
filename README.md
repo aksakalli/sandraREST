@@ -49,7 +49,4 @@ and only relies on REST API for access to the database data.
 
 ## License
 
-Released under [the MIT license][license].
-
-
-
+Released under [the MIT license](LICENSE).
