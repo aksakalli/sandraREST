@@ -10,7 +10,7 @@ retrieved.
 ###Keyspace:
 ```
 /browser/
-GET   get list of keyspaces
+GET     get list of keyspaces
 ​
 /browser/:keyspace/
 POST    add new keyspace
@@ -21,7 +21,7 @@ POST    add new keyspace
 ###Column Family:
 ```
 /browser/:keyspace/
-GET  get list of column families for given keyspace
+GET     get list of column families for given keyspace
 ​
 /browser/:keyspace/:columnfamily
 GET     get rows of data for given column family
