@@ -1,11 +1,9 @@
 ##REST Endpoints
 
-A consistent and functional REST api was designed and implemented. A rest api for
-keyspaces, column families and columns were implemented under “/browser/” url. These
-group of URLs allows to managing meta data.
+A rest api for keyspaces, column families and columns were implemented under “/browser/”
+url. These group of URLs allows to managing meta data.
 
-All required parameters for create and update operation are passed as the same object as
-retrieved.
+All required parameters for create and update operation are passed as the same object as retrieved.
 
 ###Keyspace:
 ```
