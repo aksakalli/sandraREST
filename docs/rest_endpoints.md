@@ -1,9 +1,9 @@
 ##REST Endpoints
 
-A rest api for keyspaces, column families and columns were implemented under “/browser/”
+A rest api for keyspaces, column families and columns are provided under “/browser/”
 url. These group of URLs allows to managing meta data.
 
-All required parameters for create and update operation are passed as the same object as retrieved.
+All required parameters for create and update operation need to be sent as the same object as retrieved. (However remember that Cassandra only allows to update some parameters.)
 
 ###Keyspace:
 ```
@@ -39,8 +39,7 @@ PUT     change properties for given column
 DELETE  drop given column
 ```
 
-Besides these functionalities, a CQL query service was implemented. It allows client
-application to run given CQL queries.
+Besides these functionalities, a CQL query service is provided to run given CQL queries.
 
 ###CQL
 ```
