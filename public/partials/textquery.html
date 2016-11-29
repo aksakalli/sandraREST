@@ -28,11 +28,11 @@
                 <table ng-if="queryResult.rows.length > 0" class="md-whiteframe-z1 animate-if" >
                     <tr>
                         <th></th>
-                        <th ng-repeat="column in queryResult.meta.columns">{{column.name}}</th>
+                        <th ng-repeat="column in queryResult.columns">{{column.name}}</th>
                     </tr>
                     <tr ng-repeat="row in queryResult.rows">
                         <td class="row-number">{{$index + 1}}</td>
-                        <td ng-repeat="column in queryResult.meta.columns">{{row[column.name]}}</td>
+                        <td ng-repeat="column in queryResult.columns">{{row[column.name]}}</td>
                     </tr>
                 </table>
             </div>

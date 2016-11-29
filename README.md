@@ -26,9 +26,9 @@ points and many other client options.
 
 running the source code:
 ```bash
-npm install
-bower install
-node bin/www
+$ npm install
+$ bower install
+$ npm start
 ```
 
 ## Architecture

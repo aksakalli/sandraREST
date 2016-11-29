@@ -11,6 +11,7 @@ var Query = {
     },
 
     executeGlobaly: function (req, res, next) {
+        Query.client.keyspace = undefined;
         Query.client.execute(req.body.query, function (err, result) {
             if (err) {
                 var error = new Error('Bad Request');
@@ -25,8 +26,8 @@ var Query = {
     },
 
     executeOnKeyspace: function (req, res, next) {
-        this.client.keyspace = req.params.keyspace;
-        this.client.execute(req.body.query, function (err, result) {
+        Query.client.keyspace = req.params.keyspace;
+        Query.client.execute(req.body.query, function (err, result) {
             if (err) {
                 var error = new Error('Bad Request');
                 error.status = 400;

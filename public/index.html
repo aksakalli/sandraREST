@@ -19,7 +19,7 @@
 </md-toolbar>
 
 <div layout="row" flex>
-    <md-sidenav layout="column" ng-include="'partials/explorer.html'" class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$media('gt-sm')">
+    <md-sidenav layout="column" ng-include="'partials/explorer.html'" class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-sm')">
     </md-sidenav>
     <div layout="column" flex style="overflow: auto;">
         <md-tabs md-selected="selectedIndex" >
@@ -31,7 +31,7 @@
             </md-tab>
         </md-tabs>
         <!--div layout="column" ng-include="'partials/textquery.html'"></div-->
-        
+
     </div>
 </div>
 
